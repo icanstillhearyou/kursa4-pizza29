@@ -69,14 +69,15 @@ h5 {
 }
 
 .header {
+    font-size: 19px;
     height: 80px;
     background-color: #fff;
     box-shadow: var(--box-shadow); /*Черта под навбаром*/
 }
 
-.header-list {
+/* .header-list {
     text-transform: uppercase;
-}
+} */
 
 .heavy-logo {
     position: fixed;
@@ -124,6 +125,7 @@ h5 {
 }
 
 .home-btn {
+    font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
