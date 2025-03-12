@@ -1,0 +1,60 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Оформление заказа{% endblock title %}
+
+{% block content %}
+    <div class="forcreate">
+        <div class="profile bg-white p-4 m-4 mx-2">
+            <h2 class="mb-2">Оформить заказ</h2>
+            <form action="" method="post" class="order-form">
+                {% csrf_token %}
+                <div class="col-md-12 mb-3">
+                    <label for="id_first_name" class="form-label">Имя</label>
+                    <input type="text" class="form-control form-styleprofile" id="id_first_name" 
+                    name="first_name" placeholder="Введите имя" value="{{ form.first_name.value|default:'' }}" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="id_last_name" class="form-label">Фамилия</label>
+                    <input type="text" class="form-control form-styleprofile" id="id_last_name" 
+                    name="last_name" placeholder="Введите фамилию" value="{{ form.last_name.value|default:'' }}" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="id_email" class="form-label">Эл. почта</label>
+                    <input type="text" class="form-control form-styleprofile" id="id_email" 
+                    name="email" placeholder="Введите эл. почту" value="{{ form.email.value|default:'' }}" required>
+                </div>
+
+                <div class="col-md-12 mb-3">
+                    <label for="id_adress" class="form-label">Адрес</label>
+                    <input type="text" class="form-control form-styleprofile" id="id_adress" 
+                    name="adress" placeholder="Введите адрес" value="{{ form.adress.value|default:'' }}" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="id_postal_code" class="form-label">Почтовый индекс</label>
+                    <input type="text" class="form-control form-styleprofile" id="id_postal_code" 
+                    name="postal_code" placeholder="Введите почтовый индекс" value="{{ form.postal_code.value|default:'' }}" required>
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="id_city" class="form-label">Город</label>
+                    <input type="text" class="form-control form-styleprofile" id="id_city" 
+                    name="city" placeholder="Введите город" value="{{ form.city.value|default:'' }}" required>
+                </div>
+                <p><input type="submit" value="Оформить заказ"></p>
+                {% csrf_token %}
+            </form>
+        </div>
+        <div class="checkout">
+            <h1>Оформление заказа</h1>
+            <div class="order-info">
+                {% for item in cart %}
+                    <li>
+                        {{ item.quantity }} x {{ item.product.name }}
+                        <p>{{ item.total_price }} ₽</p>
+                    </li>
+                    <p>Общая стоимость: {{ cart.get_total_price }} ₽</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
