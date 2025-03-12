@@ -18,7 +18,7 @@ def login(request):
 
             if user:
                 auth.login(request, user)
-                return HttpResponseRedirect(reverse('main:product'))
+                return HttpResponseRedirect(reverse('main:product_list')) # Если на главную то main:popular_list
     else:
         form = UserLoginForm()
 
