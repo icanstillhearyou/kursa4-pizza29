@@ -5,9 +5,49 @@
 
 {% block content %}
     <section class="home d-flex flex-column">
-        <div class="home-title d-flex flex-column align-items-center">
-            <a href="/shop" class="home-btn mt-4">Все позиции</a>
+        <!-- Карусель -->
+        <div id="pizzaCarousel" class="carousel slide" data-bs-ride="carousel">
+            <!-- Индикаторы (точки под каруселью) -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#pizzaCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                <button type="button" data-bs-target="#pizzaCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                <button type="button" data-bs-target="#pizzaCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            </div>
+
+            <!-- Слайды с изображениями -->
+            <div class="carousel-inner">
+                <div class="carousel-item active data-bs-interval="3000"">
+                    <a href="/shop">
+                        <img src="{% static 'img/car2.jpg' %}" class="d-block w-100" alt="Пицца 1">
+                    </a>
+                </div>
+                <div class="carousel-item data-bs-interval="3000"">
+                    <a href="/shop">
+                        <img src="{% static 'img/car3.jpg' %}" class="d-block w-100" alt="Пицца 2">
+                    </a>
+                </div>
+                <div class="carousel-item data-bs-interval="3000"">
+                    <a href="/shop">
+                        <img src="{% static 'img/car4.jpg' %}" class="d-block w-100" alt="Пицца 3">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Кнопки "Вперед" и "Назад" -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#pizzaCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Предыдущий</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#pizzaCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" ari-hidden="true"></span>
+                <span class="visually-hidden">Следующий</span>
+            </button>
         </div>
+        <!-- Карусель -->
+
+        {% comment %} <div class="home-title d-flex flex-column align-items-center">
+            <a href="/shop" class="home-btn mt-4">Все позиции</a>
+        </div> {% endcomment %}
         <div class="home-recomendation">
             <div class="rec-title mb-4">
                 <h3><span>Популярные позиции</span></h3>
@@ -15,20 +55,45 @@
         </div>
         <div class="home-cards d-flex gap-4">
             {% for product in products %}
-                <a href="{{ product.get_absolute_url }}" class="home-card d-flex flex-column align-items-center text-center">
-                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="card-img" alt="">
-                    <h5 class="title-card">{{ product.name }}</h5>
-                    {% if product.discount %}
-                        <div class="cart-discount d-flex gap-2">
-                            <p class="line">{{ product.price }} ₽</p>
-                            <p>{{ product.sell_price }} ₽</p>
+                <a href="{{ product.get_absolute_url }}" class="card text-decoration-none" style="color: inherit;">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="card-img-top" alt="{{ product.name }}">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <div class="mt-auto">
+                            {% if product.discount %}
+                                <div class="cart-discount mt-1">
+                                    <p class="line">{{ product.price }} ₽</p>
+                                    <p class="price">{{ product.sell_price }} ₽</p>
+                                </div>
+                            {% else %}
+                                <p class="price">{{ product.price }} ₽</p>
+                            {% endif %}
                         </div>
-                    {% else %}
-                        <p class="price">{{ product.price }} ₽</p>
-                    {% endif %}
+                    </div>
                 </a>
             {% endfor %}
         </div>
+        <!--<div class="home-cards d-flex gap-4">
+            {% for product in products %}
+                <a href="{{ product.get_absolute_url }}" class="home-card d-flex flex-column align-items-center text-center">
+                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="card-img" alt="">
+                    {% comment %} <h5 class="title-card">{{ product.name }}</h5> {% endcomment %}
+                    <div class="card-content">
+                        <h5 class="title-card">{{ product.name }}</h5>
+                        <div class="card-desc">{{ product.description }}</div>
+                        {% if product.discount %}
+                            <div class="cart-discount price d-flex gap-2">
+                                <p class="line">{{ product.price }} ₽</p>
+                                <p>{{ product.sell_price }} ₽</p>
+                            </div>
+                        {% else %}
+                            <p class="price">{{ product.price }} ₽</p>
+                        {% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+        </div>-->
     </section>
     {% comment %} <img src="{% static 'img/logogot.png' %}" class="logogothic" alt="">
     <img src="{% static 'img/subtitlee.png' %}" class="subtitlee" alt=""> {% endcomment %}
