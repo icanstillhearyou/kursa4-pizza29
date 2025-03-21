@@ -23,12 +23,12 @@
                 </div>
                 <div class="carousel-item data-bs-interval="3000"">
                     <a href="/shop">
-                        <img src="{% static 'img/car3.jpg' %}" class="d-block w-100" alt="Пицца 2">
+                        <img src="{% static 'img/car5.jpg' %}" class="d-block w-100" alt="Пицца 2">
                     </a>
                 </div>
                 <div class="carousel-item data-bs-interval="3000"">
                     <a href="/shop">
-                        <img src="{% static 'img/car4.jpg' %}" class="d-block w-100" alt="Пицца 3">
+                        <img src="{% static 'img/car6.jpg' %}" class="d-block w-100" alt="Пицца 3">
                     </a>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                         <p class="card-text">{{ product.description }}</p>
                         <div class="mt-auto">
                             {% if product.discount %}
-                                <div class="cart-discount mt-1">
+                                <div class="cart-discount mt-0">
                                     <p class="line">{{ product.price }} ₽</p>
                                     <p class="price">{{ product.sell_price }} ₽</p>
                                 </div>
