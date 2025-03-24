@@ -1,5 +1,6 @@
+# orders/models.py
 from django.db import models
-from main.models import Product
+from main.models import Product, ProductSize
 from users.models import User
 
 class Order(models.Model):
@@ -12,7 +13,6 @@ class Order(models.Model):
     email = models.EmailField()
     city = models.CharField(max_length=100)
     adress = models.CharField(max_length=250)
-    postal_code = models.CharField(max_length=20) #
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
@@ -35,12 +35,14 @@ class OrderItem(models.Model):
                               on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name='order_items',
                                 on_delete=models.CASCADE)
+    size = models.ForeignKey(ProductSize, related_name='order_items',
+                             on_delete=models.CASCADE)
     price = models.DecimalField(max_digits=10,
                                 decimal_places=2)
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return str(self.id)
+        return f"{self.product.name} - {self.size.size.name} ({self.size.size.diameter} см)"
     
     def get_cost(self):
         return self.price * self.quantity
