@@ -14,22 +14,56 @@
             <h2>{{ product.name }}</h2>
             <h3>Категория: {{ product.category }}</h3>
             <p>Описание: {{ product.description|linebreaks }}</p>
-            {% if product.discount %}
-                <div class="cart-discount d-flex gap-2">
-                    <p class="line">{{ product.price }} ₽</p>
-                    <p>{{ product.sell_price }} ₽</p>
+            <p class="mb-2">Доступные размеры:</p>
+            
+            {% if price_items.exists %}
+                <div class="price-table mb-3">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                {% for price_item in price_items %}
+                                    <th>{{ price_item.product_size.size.name }} ({{ price_item.product_size.size.diameter }} см)</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% for price_item in price_items %}
+                                    <td>
+                                        {% if price_item.discount %}
+                                            {% comment %} <div class="cart-discount d-flex flex-row align-items-center justify-content-center gap-2"> {% endcomment %}
+                                            <div>
+                                                <span class="line">{{ price_item.price }} ₽</span>
+                                                <span>{{ price_item.sell_price }} ₽</span>
+                                            </div>
+                                        {% else %}
+                                            <span>{{ price_item.price }} ₽</span>
+                                        {% endif %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             {% else %}
-                <p class="price">{{ product.price }} ₽</p>
+                <p class="price">Цена не указана</p>
             {% endif %}
+
             <form action="{% url "cart:cart_add" product.id %}" class="q-form" method="post">
                 <div class="cart-form">
-                    {{ cart_product_form }}
+                    <div class="form-group mb-3">
+                        <label for="{{ cart_product_form.size.id_for_label }}">Размер:</label>
+                        {{ cart_product_form.size }}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ cart_product_form.quantity.id_for_label }}">Количество:</label>
+                        {{ cart_product_form.quantity }}
+                    </div>
+                    {{ cart_product_form.override }}
                     {% csrf_token %}
                 </div>
                 <input type="submit" class="add-to-cart-btn" value="Добавить в корзину">
             </form>
-            {% comment %} <a href="" class="cart-btn d-flex align-items-center justify-content-center">Добавить в корзину</a> {% endcomment %}
         </div>
     </div>
 {% endblock content %}

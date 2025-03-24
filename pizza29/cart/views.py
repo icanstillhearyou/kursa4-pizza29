@@ -1,32 +1,32 @@
+# cart/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_POST
-from main.models import Product
+from main.models import Product, ProductSize, PriceListItem
 from .cart import Cart
 from .forms import CartAddProductForm
 
-# Create your views here.
-
-# Только POST метод
 @require_POST
 def cart_add(request, product_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    form = CartAddProductForm(request.POST)
+    form = CartAddProductForm(request.POST, product=product)
     if form.is_valid():
         cd = form.cleaned_data
+        size = cd['size']
         cart.add(product=product,
-                 quantity=cd['quantity'],
-                 override_quantity=cd['override'])
+                size=size,
+                quantity=cd['quantity'],
+                override_quantity=cd['override'])
     return redirect('cart:cart_detail')
 
-# Только POST метод
 @require_POST
-def cart_remove(request, product_id):
+def cart_remove(request, product_id, size_id):
     cart = Cart(request)
     product = get_object_or_404(Product, id=product_id)
-    cart.remove(product)
+    size = get_object_or_404(ProductSize, id=size_id)
+    cart.remove(product, size)
     return redirect('cart:cart_detail')
 
 def cart_detail(request):
     cart = Cart(request)
-    return render(request, 'cart/detail.html', {'cart' : cart})
+    return render(request, 'cart/detail.html', {'cart': cart})

@@ -16,17 +16,17 @@
 
             <!-- Слайды с изображениями -->
             <div class="carousel-inner">
-                <div class="carousel-item active data-bs-interval="3000"">
+                <div class="carousel-item active" data-bs-interval="5000">
                     <a href="/shop">
                         <img src="{% static 'img/car2.jpg' %}" class="d-block w-100" alt="Пицца 1">
                     </a>
                 </div>
-                <div class="carousel-item data-bs-interval="3000"">
+                <div class="carousel-item" data-bs-interval="5000">
                     <a href="/shop">
                         <img src="{% static 'img/car5.jpg' %}" class="d-block w-100" alt="Пицца 2">
                     </a>
                 </div>
-                <div class="carousel-item data-bs-interval="3000"">
+                <div class="carousel-item" data-bs-interval="5000">
                     <a href="/shop">
                         <img src="{% static 'img/car6.jpg' %}" class="d-block w-100" alt="Пицца 3">
                     </a>
@@ -39,15 +39,12 @@
                 <span class="visually-hidden">Предыдущий</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#pizzaCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" ari-hidden="true"></span>
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Следующий</span>
             </button>
         </div>
         <!-- Карусель -->
 
-        {% comment %} <div class="home-title d-flex flex-column align-items-center">
-            <a href="/shop" class="home-btn mt-4">Все позиции</a>
-        </div> {% endcomment %}
         <div class="home-recomendation">
             <div class="rec-title mb-4">
                 <h3><span>Популярные позиции</span></h3>
@@ -61,41 +58,24 @@
                         <h5 class="card-title">{{ product.name }}</h5>
                         <p class="card-text">{{ product.description }}</p>
                         <div class="mt-auto">
-                            {% if product.discount %}
-                                <div class="cart-discount mt-0">
-                                    <p class="line">{{ product.price }} ₽</p>
-                                    <p class="price">{{ product.sell_price }} ₽</p>
-                                </div>
+                            {% if product.price_items.exists %}
+                                {% with price_item=product.price_items.first %}
+                                    {% if price_item.discount %}
+                                        <div class="cart-discount mt-0">
+                                            <p class="line">{{ price_item.price }} ₽</p>
+                                            <p class="price">{{ price_item.sell_price }} ₽</p>
+                                        </div>
+                                    {% else %}
+                                        <p class="price">от {{ price_item.price }} ₽</p>
+                                    {% endif %}
+                                {% endwith %}
                             {% else %}
-                                <p class="price">{{ product.price }} ₽</p>
+                                <p class="price">Цена не указана</p>
                             {% endif %}
                         </div>
                     </div>
                 </a>
             {% endfor %}
         </div>
-        <!--<div class="home-cards d-flex gap-4">
-            {% for product in products %}
-                <a href="{{ product.get_absolute_url }}" class="home-card d-flex flex-column align-items-center text-center">
-                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="card-img" alt="">
-                    {% comment %} <h5 class="title-card">{{ product.name }}</h5> {% endcomment %}
-                    <div class="card-content">
-                        <h5 class="title-card">{{ product.name }}</h5>
-                        <div class="card-desc">{{ product.description }}</div>
-                        {% if product.discount %}
-                            <div class="cart-discount price d-flex gap-2">
-                                <p class="line">{{ product.price }} ₽</p>
-                                <p>{{ product.sell_price }} ₽</p>
-                            </div>
-                        {% else %}
-                            <p class="price">{{ product.price }} ₽</p>
-                        {% endif %}
-                    </div>
-                </a>
-            {% endfor %}
-        </div>-->
     </section>
-    {% comment %} <img src="{% static 'img/logogot.png' %}" class="logogothic" alt="">
-    <img src="{% static 'img/subtitlee.png' %}" class="subtitlee" alt=""> {% endcomment %}
 {% endblock content %}
-

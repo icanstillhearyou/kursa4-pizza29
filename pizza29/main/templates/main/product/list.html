@@ -24,24 +24,30 @@
             </div>
             <div class="product-list">
                 <div class="item d-flex gap-4">
-                    {% for product in products %}
-                        <a href="{{ product.get_absolute_url }}" class="card text-decoration-none" style="color: inherit;">
-                            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="card-img-top" alt="{{ product.name }}">
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title">{{ product.name }}</h5>
-                                <p class="card-text">{{ product.description }}</p>
-                                <div class="mt-auto">
-                                    {% if product.discount %}
-                                        <div class="cart-discount mt-0">
-                                            <p class="line">{{ product.price }} ₽</p>
-                                            <p class="price">{{ product.sell_price }} ₽</p>
-                                        </div>
-                                    {% else %}
-                                        <p class="price">{{ product.price }} ₽</p>
-                                    {% endif %}
+                        {% for product in products %}
+                            <a href="{{ product.get_absolute_url }}" class="card text-decoration-none" style="color: inherit;">
+                                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="card-img-top" alt="{{ product.name }}">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <p class="card-text">{{ product.description }}</p>
+                                    <div class="mt-auto">
+                                        {% if product.price_items.exists %}
+                                            {% with price_item=product.price_items.first %}
+                                                {% if price_item.discount %}
+                                                    <div class="cart-discount mt-0">
+                                                        <p class="line">{{ price_item.price }} ₽</p>
+                                                        <p class="price">{{ price_item.sell_price }} ₽</p>
+                                                    </div>
+                                                {% else %}
+                                                    <p class="price">от {{ price_item.price }} ₽</p>
+                                                {% endif %}
+                                            {% endwith %}
+                                        {% else %}
+                                            <p class="price">Цена не указана</p>
+                                        {% endif %}
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
+                            </a>
                     {% endfor %}
                 </div>
                 {% comment %} <div class="items">

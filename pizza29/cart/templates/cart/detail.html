@@ -10,32 +10,32 @@
         </div>
         <div class="cart-cards">
             {% for item in cart %}
-                {% with product=item.product  %}
+                {% with product=item.product %}
                     <div class="cart-card d-flex">
                         <div class="cart-card-img">
                             <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" alt="">
                         </div>
                         <div class="cart-card-info">
                             <div class="cart-card-name">
-                                <p>{{ product.name }}</p>
+                                <p>
+                                    {{ product.name }} - 
+                                    {% if item.size %}
+                                        {{ item.size.size.name }} ({{ item.size.size.diameter }} см)
+                                    {% else %}
+                                        Размер не указан (size_id: {{ item.size_id }})
+                                    {% endif %}
+                                </p>
                             </div>
                             <div class="cart-card-q">
                                 <p>Количество: {{ item.quantity }}</p>
                             </div>
                         </div>
-                        <form action="{% url "cart:cart_remove" product.id %}" method="post">
+                        <form action="{% url "cart:cart_remove" product.id item.size.id %}" method="post">
                             <input type="submit" value="Удалить" class="remove-btn">
                             {% csrf_token %}
                         </form>
                         <div class="cart-card-price">
-                            {% if product.discount %}
-                                <div class="cart-discount d-flex gap-2">
-                                    <p class="line">{{ product.price }} ₽</p>
-                                    <p>{{ product.sell_price }} ₽</p>
-                                </div>
-                            {% else %}
-                                <p class="price">{{ product.price }} ₽</p>
-                            {% endif %}
+                            <p class="price">{{ item.price|floatformat:2 }} ₽</p>
                         </div>
                     </div>
                 {% endwith %}
@@ -51,7 +51,6 @@
                     <a href="{% url "orders:order_create" %}" class="cart-btn">Оформить заказ</a>
                 {% endif %}
             {% endwith %}
-            {% comment %} <a href="#" class="cart-btn">Оформить заказ</a> {% endcomment %}
         </div>
     </section>
 {% endblock content %}
