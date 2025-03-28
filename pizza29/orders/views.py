@@ -1,5 +1,5 @@
 # orders/views.py
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import OrderItem
 from .forms import OrderCreateForm
 from cart.cart import Cart
@@ -14,15 +14,15 @@ def order_create(request):
                 OrderItem.objects.create(
                     order=order,
                     product=item['product'],
-                    size=item['size'],  # Добавляем size из корзины
+                    size=item['size'],
                     price=item['price'],
                     quantity=item['quantity']
                 )
+            # Сохраняем order_id в сессии
+            request.session['order_id'] = order.id
             cart.clear()
-            return render(request,
-                          'order/created.html',
-                          {'order': order,
-                           'form': form})
+            # Перенаправляем на страницу оплаты
+            return redirect('payment:process')
     else:
         form = OrderCreateForm(request=request)
         return render(request,

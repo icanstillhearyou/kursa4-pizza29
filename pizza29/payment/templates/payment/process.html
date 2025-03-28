@@ -1,0 +1,59 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Процесс оплаты{% endblock title %}
+
+{% block content %}
+    <div class="window">
+        <h3 class="pay-title">
+            Оплата заказа №{{ order.id }}
+        </h3>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+            <a href="{% url 'orders:order_create' %}" class="btn">Вернуться к оформлению заказа</a>
+        {% else %}
+            <div class="pay-card d-flex">
+                <div class="cart-cardsproc">
+                    {% for item in order.items.all %}
+                        {% with product=item.product %}
+                            <div class="cart-card d-flex">
+                                <div class="cart-card-img">
+                                    <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" alt="{{ product.name }}">
+                                </div>
+                                <div class="cart-card-info">
+                                    <div class="cart-card-name">
+                                        <p>
+                                            {{ product.name }} - 
+                                            {% if item.size %}
+                                                {{ item.size.size.name }} ({{ item.size.size.diameter }} см)
+                                            {% else %}
+                                                Размер не указан
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <div class="cart-card-q">
+                                        <p>Количество: {{ item.quantity }}</p>
+                                    </div>
+                                </div>
+                                <form action="{% url "cart:cart_remove" product.id item.size.id %}" method="post">
+                                    <input type="submit" value="Удалить" class="remove-btn">
+                                    {% csrf_token %}
+                                </form>
+                                <div class="cart-card-price">
+                                    <p class="cart-total-price">{{ item.get_cost|floatformat:2 }} ₽</p>
+                                </div>
+                            </div>
+                        {% endwith %}
+                    {% endfor %}
+                    <div class="total">
+                        <h5>Итого: {{ total_cost|floatformat:2 }} ₽</h5>
+                    </div>
+                    <form action="{% url "payment:process" %}" method="post" class="pay-form">
+                        <input type="submit" value="Оплатить" class="paynow">
+                        {% csrf_token %}
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

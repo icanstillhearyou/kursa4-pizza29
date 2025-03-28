@@ -5,7 +5,7 @@ from .models import Order
 class OrderCreateForm(forms.ModelForm):
     class Meta:
         model = Order
-        fields = ['first_name', 'last_name', 'email', 'adress', 'city']  # Убрали postal_code и user
+        fields = ['first_name', 'last_name', 'email', 'adress', 'city']  # Убрал 'user'
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
