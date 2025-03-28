@@ -585,3 +585,311 @@ h5 {
     height: auto; /* Сохраняем пропорции по высоте */
     object-fit: cover; /* Обрезаем лишнее, сохраняя пропорции */
 }
+
+/* ----------------------------------------- */
+.login {
+    width: 400px;
+    height: 600px;
+    margin-top: 100px;
+    border: 1px solid #00000036;
+    border-radius: 10px;
+}
+
+.login-reg {
+    width: 600px;
+    height: 600px;
+    margin-top: 100px;
+    border: 1px solid #00000036;
+    border-radius: 10px;
+}
+
+.login-title h2 {
+    margin-bottom: 20px;
+    margin-left: 40px;
+    margin-top: 30px;
+}
+
+.form-style {
+    width: 250px;
+    margin-left: 40px;
+}
+
+.form-input{
+    margin-left: 40px;
+}
+.login-btn {
+    display: flex;
+    justify-content: center;
+    width: 100px;
+    height: 45px;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #00000034;
+    margin-top: 20px;
+    transition: all 0.5s ease;
+}
+
+.login-btn:hover {
+    border: 1px solid #000000;
+}
+
+.reset-pass {
+    margin-left: 40px;
+    margin-top: 195px;
+}
+
+.form-stylereg {
+    width: 250px;
+    margin-left: 20px;
+}
+
+.form-styleprofile {
+    width: 250px;
+}
+
+.profile {
+    width: 570px;
+    height: 600px;
+    margin-top: 100px;
+    border: 1px solid #00000036;
+    border-radius: 10px;
+}
+
+.box2 {
+    margin-top: 212px;
+    margin-left: 20px;
+}
+
+.box22 {
+    margin-left: 20px;
+}
+
+.profile-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 50px;
+    border: 1px solid #00000034;
+    border-radius: 5px;
+    margin: 0;
+    transition: all 0.5s ease;
+    background-color: #fff;
+}
+
+.profile-btn:hover {
+    border: 1px solid #000000;
+}
+
+.checkout {
+    margin-top: 70px;
+    width: 600px;
+}
+
+.order-info {
+    margin-left: 40px;
+}
+
+.order-form input {
+    border-radius: 5px;
+    width: 250px;
+    height: 38px;
+    background-color: #fff;
+    box-shadow: none;
+    border: 1px solid #00000046;
+}
+
+.order-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.order-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 50px;
+    border: 1px solid #00000034;
+    border-radius: 5px;
+    margin: 0;
+    transition: all 0.5s ease;
+    background-color: #fff;
+}
+
+.order-btn:hover {
+    border: 1px solid #000000;
+}
+
+.paynow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180px;
+    height: 50px;
+    border: 1px solid #00000034;
+    border-radius: 5px;
+    transition: all 0.5s ease;
+    background-color: #fff;
+}
+
+.paynow:hover {
+    border: 1px solid #000000;
+}
+
+.pay-title {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.pay-card {
+    width: 600px;
+    margin-top: 40px;
+    margin-left: 20px;
+}
+
+.payform {
+    position: fixed;
+    top: 75%;
+}
+
+.castle {
+    position: absolute;
+    width: 450px;
+    height: 650px;
+    left: 37%;
+    top: 15%;
+}
+
+.castlep {
+    position: absolute;
+    width: 450px;
+    height: 650px;
+    left: 45%;
+    top: 15%;
+}
+
+.vl {
+    position: absolute;
+    width: 1px;
+    height: 500px;
+    background-color: #000;
+    left: 32%;
+    top: 25%;   
+    opacity: 0.2;
+}
+
+.orderss {
+    margin-left: 70px;
+    width: 520px;
+    max-height: 52vh; 
+    overflow-y: auto;
+}
+
+.order-cart {
+    width: 500px;
+    border: 1px solid #00000034;
+    border-radius: 5px;
+    background-color: #fff;
+    margin: 0;
+    transition: all 0.5s ease;
+    margin-bottom: 10px;
+}
+
+.order-cart:hover {
+    border: 1px solid #000000;
+}
+
+.order-title {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.order-desc {
+    margin-top: 5px;
+    margin-left: 10px;
+}
+
+.orders h2 {
+    margin-left: 65px;
+}
+
+.dadad {
+    font-family: "Carrois Gothic", sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.orders-carts {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.image-nav {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.prev-btn, .next-btn {
+    color: #000;
+    background-color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+}
+
+.next-btn:hover {
+    background-color: #00000013;
+}
+
+.prev-btn:hover {
+    background-color: #00000013;
+}
+
+.prev-btn {
+    position: absolute;
+    left: 8%;
+}
+
+.next-btn {
+    position: absolute;
+    left: 41%;
+}
+
+.notorders {
+    margin-left: 70px;
+    margin-top: 20px;
+}
+
+.mainvl {
+    position: absolute;
+    height: 650px;
+    width: 1px;
+    background-color: #000;
+    opacity: 0.2;
+    left: 18%;
+    top: 23%;
+}
+
+.regform button {
+    margin-left: 20px;
+    margin-top: 30px;
+}
+
+.windowp {
+    width: 1210px;
+    height: 600px;
+    margin-top: 100px;
+    border: 1px solid #00000036;
+    border-radius: 10px;
+    /* background-image: url(../img/window.png); */
+    background-repeat: no-repeat;
+}
+
+

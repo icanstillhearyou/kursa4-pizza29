@@ -18,7 +18,7 @@ def login(request):
 
             if user:
                 auth.login(request, user)
-                return HttpResponseRedirect(reverse('main:product_list')) # Если на главную то main:popular_list
+                return HttpResponseRedirect(reverse('main:popular_list')) # Если на главную то main:popular_listproduct_list
     else:
         form = UserLoginForm()
 
@@ -42,14 +42,14 @@ def registration(request):
 def profile(request):
     if request.method == 'POST':
         form = ProfileForm(data=request.POST, 
-                           isinstance=request.user,
+                           instance=request.user,
                            files=request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, 'Профиль был изменён!')
             HttpResponseRedirect(reverse('user:profile'))
     else:
-        form = ProfileForm(isinstance=request.user)
+        form = ProfileForm(instance=request.user)
 
     orders = Order.objects.filter(user=request.user).prefetch_related(
         Prefetch(
@@ -64,5 +64,5 @@ def profile(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect(reverse('main:product_list')) # Если на главную то main:popular_list
+    return redirect(reverse('main:popular_list')) # Если на главную то main:product_list
 

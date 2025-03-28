@@ -5,9 +5,9 @@
 
 {% block content %}
     <div class="d-flex">
-        <div class="profile bg-white p-4 mb-4 mx-2 rounded">
-            <h2 class="mb-2">Профиль</h2>
+        <div class="windowp d-flex bg-white p-4 mb-4 mx-2 rounded">
             <form action="{% url "users:profile" %}" method="post" enctype="multipart/form-data">
+                <h2 class="mb-2">Профиль</h2>
                 {% csrf_token %}
                 <div class="d-flex">
                     <div class="1box">
@@ -31,7 +31,7 @@
                             name="id_last_name" placeholder="Введите фамилию" value="{{ form.last_name.value }}" required>
                         </div>
                     </div>
-                    <div class="2box">
+                    <div class="box2">
                         <div class="col-md-12 mb-3">
                             <label for="id_username" class="form-label">Имя пользователя</label>
                             <input type="text" class="form-control form-styleprofile" id="id_username" 
@@ -51,7 +51,7 @@
             </form>
             {% comment %} orders {% endcomment %}
             <div class="orders">
-                <h3 class="mb-2">Ваши заказы</h3>
+                <h2 class="mb-2">Ваши заказы</h3>
                 {% if orders %}
                     <div class="orderss">
                         {% for order in orders %}
@@ -64,10 +64,15 @@
                                             <br>
                                             <span class="dadad">Количество: </span> {{ item.quantity }},
                                             <span class="dadad">Цена: {{ item.price }} ₽</span> <br>
+                                            {% comment %} <span class="dadad">Цена: </span> {{ item.get_cost|floatformat:2 }} ₽<br> {% endcomment %}
                                             <span class="dadad">Дата: </span> {{ order.created }}
+                                            {% comment %} <span class="dadad">Итого: </span> {{ order.get_total_cost|floatformat:2 }} ₽ {% endcomment %}
                                             <br>
                                         </div>
                                     {% endfor %}
+                                    <div class="orders-carts">
+                                        <span class="dadad">Итого: </span> {{ order.get_total_cost|floatformat:2 }} ₽
+                                    </div>
                                 </p>
                             </div>
                         {% endfor %}
