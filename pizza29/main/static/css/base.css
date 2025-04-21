@@ -446,7 +446,7 @@ h5 {
 
 .cart-cards {
     max-height: 52vh;
-    width: 600px;
+    width: 700px;
     overflow: auto;
 }
 
@@ -455,13 +455,11 @@ h5 {
     gap: 15px;
     justify-content: center;
     align-items: center;
-    width: 590px;
+    width: 700px;
     height: 150px;
     border: 1px solid #00000042;
     border-radius: 10px;
     margin-bottom: 10px;
-    /* background-image: url(../img/cfr2.png);
-    background-repeat: no-repeat; */
 }
 
 /* .cart-card:nth-child(even) {
@@ -476,7 +474,7 @@ h5 {
 }
 
 .cart-card-name {
-    width: 180px;
+    width: 280px;
 }
 
 .remove-btn {
@@ -515,6 +513,7 @@ h5 {
 
 .cart-price {
     font-size: 16px;
+    
 }
 
 .opac {
@@ -931,22 +930,36 @@ h5 {
     margin: 0;
 }
 .quantity-btn {
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
+    background-color: #fff;
+    border: 1px solid #00000042;
     border-radius: 5px;
     padding: 5px 10px;
     cursor: pointer;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px; /* Фиксированная ширина кнопки */
+    height: 30px; /* Фиксированная высота кнопки */
+    transition: all 0.5s ease;
 }
 .quantity-btn:hover {
-    background-color: #e0e0e0;
+    /* background-color: #e0e0e0; */
+    border: 1px solid #000;
 }
 .cart-card-q {
     display: flex;
     align-items: center;
+    
 }
 .cart-card-q p {
     margin: 0 10px;
+    
+}
+
+.cart-card-price {
+    /* margin-right: -10px; */
+    
 }
 
 .empty-cart {

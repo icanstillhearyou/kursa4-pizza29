@@ -28,10 +28,10 @@
                                     </p>
                                 </div>
                                 <div class="cart-card-q d-flex align-items-center">
-                                    <p class="mx-2">Количество: </p>
+                                    <p class="mx-0">Количество: </p>
                                     <form action="{% url "cart:cart_decrement" product.id item.size.id %}" method="post" class="quantity-form">
                                         {% csrf_token %}
-                                        <button type="submit" class="quantity-btn">-</button>
+                                        <button type="submit" class="quantity-btn" style="margin-left: 7px;">-</button>
                                     </form>
                                     <p class="mx-2">{{ item.quantity }}</p>
                                     <form action="{% url "cart:cart_increment" product.id item.size.id %}" method="post" class="quantity-form">
