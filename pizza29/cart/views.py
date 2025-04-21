@@ -17,7 +17,10 @@ def cart_add(request, product_id):
                 size=size,
                 quantity=cd['quantity'],
                 override_quantity=cd['override'])
-    return redirect('cart:cart_detail')
+    # return redirect('cart:cart_detail')
+        # return redirect('main:product_detail', product.slug)
+    return redirect('main:product_detail', product.slug)
+
 
 @require_POST
 def cart_remove(request, product_id, size_id):
@@ -30,3 +33,19 @@ def cart_remove(request, product_id, size_id):
 def cart_detail(request):
     cart = Cart(request)
     return render(request, 'cart/detail.html', {'cart': cart})
+
+@require_POST
+def cart_increment(request, product_id, size_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    size = get_object_or_404(ProductSize, id=size_id)
+    cart.add(product=product, size=size, quantity=1, override_quantity=False)
+    return redirect('cart:cart_detail')
+
+@require_POST
+def cart_decrement(request, product_id, size_id):
+    cart = Cart(request)
+    product = get_object_or_404(Product, id=product_id)
+    size = get_object_or_404(ProductSize, id=size_id)
+    cart.add(product=product, size=size, quantity=-1, override_quantity=False)
+    return redirect('cart:cart_detail')

@@ -52,7 +52,7 @@
         </div>
         <div class="home-cards d-flex gap-4">
             {% for product in products %}
-                <a href="{{ product.get_absolute_url }}" class="card text-decoration-none" style="color: inherit;">
+                <a href="{{ product.get_absolute_url }}" class="card text-decoration-none mb-4" style="color: inherit;">
                     <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" class="card-img-top" alt="{{ product.name }}">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title">{{ product.name }}</h5>

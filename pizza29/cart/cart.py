@@ -30,13 +30,18 @@ class Cart:
             self.cart[item_id]['quantity'] = quantity
         else:
             self.cart[item_id]['quantity'] += quantity
-        self.save()
+
+        # Если количество <= 0, удаляем товар из корзины
+        if self.cart[item_id]['quantity'] <= 0:
+            self.remove(product, size)
+        else:
+            self.save()
 
     def save(self):
         self.session.modified = True
 
     def remove(self, product, size):
-        item_id = f"{product.id}_{size.id}"  # Формируем item_id на основе product.id и size.id
+        item_id = f"{product.id}_{size.id}"
         if item_id in self.cart:
             del self.cart[item_id]
             self.save()
@@ -68,4 +73,4 @@ class Cart:
 
     def get_total_price(self):
         total = sum(Decimal(item['price']) * item['quantity'] for item in self.cart.values())
-        return format(total, '.2f')
+        return total 

@@ -117,6 +117,7 @@ h5 {
     width: 18rem;
     transition: transform 0.2s, box-shadow 0.2s; /* Плавный эффект при наведении */
     overflow: hidden;
+    /* margin-bottom: 15px; */
 }
 
 .card:hover {
@@ -298,9 +299,9 @@ h5 {
     height: 650px;
 }
 
-.detail-product {
+/* .detail-product {
     margin-top: 80px;
-}
+} */
 
 .detail-description {
     margin-left: 40px;
@@ -454,7 +455,7 @@ h5 {
     gap: 15px;
     justify-content: center;
     align-items: center;
-    width: 570px;
+    width: 590px;
     height: 150px;
     border: 1px solid #00000042;
     border-radius: 10px;
@@ -892,4 +893,72 @@ h5 {
     background-repeat: no-repeat;
 }
 
+.back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* width: 220px;
+    height: 50px; */
+    padding: 5px 10px;
+    border: 1px solid #00000042;
+    border-radius: 5px;
+    margin: 0;
+    transition: all 0.5s ease;
+    background-color: #fff;
+    margin-top: 25px;
+}
+
+.back-btn:hover{
+    border: 1px solid #000;
+}
+
+/* .back-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+.back-btn:hover {
+    background-color: #e0e0e0;
+} */
+
+.quantity-form {
+    display: inline-block;
+    margin: 0;
+}
+.quantity-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.quantity-btn:hover {
+    background-color: #e0e0e0;
+}
+.cart-card-q {
+    display: flex;
+    align-items: center;
+}
+.cart-card-q p {
+    margin: 0 10px;
+}
+
+.empty-cart {
+    text-align: center;
+    /* padding: 20px; */
+}
+.empty-cart h4 {
+    margin-bottom: 10px;
+    color: #000;
+}
+.empty-cart p {
+    margin-bottom: 20px;
+    color: #000;
+}
 

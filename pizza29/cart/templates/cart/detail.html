@@ -8,49 +8,62 @@
         <div class="cart-title">
             <h2>Корзина</h2>
         </div>
-        <div class="cart-cards">
-            {% for item in cart %}
-                {% with product=item.product %}
-                    <div class="cart-card d-flex">
-                        <div class="cart-card-img">
-                            <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" alt="">
-                        </div>
-                        <div class="cart-card-info">
-                            <div class="cart-card-name">
-                                <p>
-                                    {{ product.name }} - 
-                                    {% if item.size %}
-                                        {{ item.size.size.name }} ({{ item.size.size.diameter }} см)
-                                    {% else %}
-                                        Размер не указан (size_id: {{ item.size_id }})
-                                    {% endif %}
-                                </p>
+        {% if cart|length > 0 %}
+            <div class="cart-cards">
+                {% for item in cart %}
+                    {% with product=item.product %}
+                        <div class="cart-card d-flex">
+                            <div class="cart-card-img">
+                                <img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/noimage.jpg' %}{% endif %}" alt="">
                             </div>
-                            <div class="cart-card-q">
-                                <p>Количество: {{ item.quantity }}</p>
+                            <div class="cart-card-info">
+                                <div class="cart-card-name">
+                                    <p>
+                                        {{ product.name }} - 
+                                        {% if item.size %}
+                                            {{ item.size.size.name }} ({{ item.size.size.diameter }} см)
+                                        {% else %}
+                                            Размер не указан (size_id: {{ item.size_id }})
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="cart-card-q d-flex align-items-center">
+                                    <p class="mx-2">Количество: </p>
+                                    <form action="{% url "cart:cart_decrement" product.id item.size.id %}" method="post" class="quantity-form">
+                                        {% csrf_token %}
+                                        <button type="submit" class="quantity-btn">-</button>
+                                    </form>
+                                    <p class="mx-2">{{ item.quantity }}</p>
+                                    <form action="{% url "cart:cart_increment" product.id item.size.id %}" method="post" class="quantity-form">
+                                        {% csrf_token %}
+                                        <button type="submit" class="quantity-btn">+</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <form action="{% url "cart:cart_remove" product.id item.size.id %}" method="post">
+                                <input type="submit" value="Удалить" class="remove-btn">
+                                {% csrf_token %}
+                            </form>
+                            <div class="cart-card-price">
+                                <p class="price">{{ item.total_price|floatformat:2 }} ₽</p>
                             </div>
                         </div>
-                        <form action="{% url "cart:cart_remove" product.id item.size.id %}" method="post">
-                            <input type="submit" value="Удалить" class="remove-btn">
-                            {% csrf_token %}
-                        </form>
-                        <div class="cart-card-price">
-                            <p class="price">{{ item.price|floatformat:2 }} ₽</p>
-                        </div>
-                    </div>
-                {% endwith %}
-            {% endfor %}
-        </div>
-        <div class="total">
-            <h5>Стоимость: {{ cart.get_total_price }} ₽</h5>
-        </div>
-        <div class="cart-buttons d-flex gap-3">
-            <a href="/shop" class="cart-btn">Меню</a>
-            {% with cart_quantity=cart|length %}
-                {% if cart_quantity > 0 %}
-                    <a href="{% url "orders:order_create" %}" class="cart-btn">Оформить заказ</a>
-                {% endif %}
-            {% endwith %}
-        </div>
+                    {% endwith %}
+                {% endfor %}
+            </div>
+            <div class="total">
+                <h5>Стоимость: {{ cart.get_total_price|floatformat:2 }} ₽</h5>
+            </div>
+            <div class="cart-buttons d-flex gap-3">
+                <a href="/shop" class="cart-btn">Меню</a>
+                <a href="{% url "orders:order_create" %}" class="cart-btn">Оформить заказ</a>
+            </div>
+        {% else %}
+            <div class="empty-cart">
+                <h4>Здесь пусто</h4>
+                <p>Добавьте товары в корзину, чтобы оформить заказ.</p>
+                <a href="/shop" class="cart-btn">Перейти в меню</a>
+            </div>
+        {% endif %}
     </section>
 {% endblock content %}
