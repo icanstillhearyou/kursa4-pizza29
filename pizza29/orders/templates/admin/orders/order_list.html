@@ -26,12 +26,30 @@
         .table th, .table td {
             vertical-align: middle;
         }
+        .details-btn {
+            display: inline-flex;
+            justify-content: center;
+            width: 80px; /* Меньше, чтобы поместиться в таблицу */
+            height: 35px;
+            align-items: center;
+            background-color: #fff;
+            border-radius: 5px;
+            border: 1px solid #00000034;
+            transition: all 0.5s ease;
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .details-btn:hover {
+            border: 1px solid #000000;
+            color: #000;
+        }
     </style>
     <div class="container mt-4">
         <h2>Управление заказами</h2>
 
         <!-- Кнопка для создания заказа -->
-        {% comment %} <a href="{% url 'orders:admin_order_create' %}" class="btn btn-primary mb-3">Создать заказ</a> {% endcomment %}
+        {% comment %} <a href="{% url 'orders:admin_order_create' %}" class="custom-btn mb-3">Создать заказ</a> {% endcomment %}
 
         <!-- Форма поиска и сортировки -->
         <form method="get" class="search-form">
@@ -53,6 +71,7 @@
                     <th>Самовывоз</th>
                     <th>Оплачено</th>
                     <th>Сумма</th>
+                    <th>Действия</th>
                 </tr>
             </thead>
             <tbody>
@@ -64,11 +83,53 @@
                         <td>{{ order.created|date:"d.m.Y H:i" }}</td>
                         <td>{{ order.is_pickup|yesno:"Да,Нет" }}</td>
                         <td>{{ order.paid|yesno:"Да,Нет" }}</td>
-                        <td>{{ order.get_total_cost }} ₽</td>
+                        <td>{{ order.get_total_cost|floatformat:2 }} ₽</td>
+                        <td>
+                            <button type="button" class="btn custom-btn" data-bs-toggle="modal" data-bs-target="#orderModal{{ order.id }}">
+                                Подробнее
+                            </button>
+                        </td>
                     </tr>
+                    <!-- Модальное окно для заказа -->
+                    <div class="modal fade" id="orderModal{{ order.id }}" tabindex="-1" aria-labelledby="orderModalLabel{{ order.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="orderModalLabel{{ order.id }}">Заказ №{{ order.id }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p><strong>Клиент:</strong> {{ order.first_name }} {{ order.last_name }}</p>
+                                    <p><strong>Email:</strong> {{ order.email }}</p>
+                                    <p><strong>Дата:</strong> {{ order.created|date:"d.m.Y H:i" }}</p>
+                                    <p><strong>Самовывоз:</strong> {{ order.is_pickup|yesno:"Да,Нет" }}</p>
+                                    <p><strong>Город:</strong> {{ order.city|default:"—" }}</p>
+                                    <p><strong>Адрес:</strong> {{ order.adress|default:"—" }}</p>
+                                    <p><strong>Оплачено:</strong> {{ order.paid|yesno:"Да,Нет" }}</p>
+                                    <h6>Товары:</h6>
+                                    <ul>
+                                        {% for item in order.items.all %}
+                                            <li>
+                                                {{ item.quantity }} x {{ item.product.name }} - {{ item.size.size.name }} ({{ item.size.size.diameter }} см)
+                                                <br>
+                                                <strong>Цена:</strong> {{ item.price|floatformat:2 }} ₽
+                                                <strong>Итого:</strong> {{ item.get_cost|floatformat:2 }} ₽
+                                            </li>
+                                        {% empty %}
+                                            <li>Товары отсутствуют</li>
+                                        {% endfor %}
+                                    </ul>
+                                    <p><strong>Общая стоимость:</strong> {{ order.get_total_cost|floatformat:2 }} ₽</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="custom-btn" data-bs-dismiss="modal">Закрыть</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 {% empty %}
                     <tr>
-                        <td colspan="7" class="text-center">Заказы не найдены</td>
+                        <td colspan="8" class="text-center">Заказы не найдены</td>
                     </tr>
                 {% endfor %}
             </tbody>
