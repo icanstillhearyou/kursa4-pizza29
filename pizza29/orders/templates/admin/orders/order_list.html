@@ -9,18 +9,13 @@
             display: inline-block;
             color: red;
             font-size: 12px;
-            margin-left: 10px;
+            margin-left: 13px;
             vertical-align: middle;
             list-style: none;
             padding: 0;
         }
         .errorlist li {
             margin: 0;
-        }
-        .field-with-error {
-            display: inline-flex;
-            align-items: center;
-            width: 100%;
         }
         .search-form {
             margin-bottom: 20px;
@@ -34,6 +29,9 @@
     </style>
     <div class="container mt-4">
         <h2>Управление заказами</h2>
+
+        <!-- Кнопка для создания заказа -->
+        {% comment %} <a href="{% url 'orders:admin_order_create' %}" class="btn btn-primary mb-3">Создать заказ</a> {% endcomment %}
 
         <!-- Форма поиска и сортировки -->
         <form method="get" class="search-form">
@@ -51,7 +49,6 @@
                     <th>№ Заказа</th>
                     <th>Клиент</th>
                     <th>Email</th>
-                    <th>Тип заказа</th>
                     <th>Дата</th>
                     <th>Самовывоз</th>
                     <th>Оплачено</th>
@@ -64,7 +61,6 @@
                         <td>{{ order.id }}</td>
                         <td>{{ order.first_name }} {{ order.last_name }}</td>
                         <td>{{ order.email }}</td>
-                        <td>{{ order.get_order_type_display }}</td>
                         <td>{{ order.created|date:"d.m.Y H:i" }}</td>
                         <td>{{ order.is_pickup|yesno:"Да,Нет" }}</td>
                         <td>{{ order.paid|yesno:"Да,Нет" }}</td>
@@ -72,7 +68,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="8" class="text-center">Заказы не найдены</td>
+                        <td colspan="7" class="text-center">Заказы не найдены</td>
                     </tr>
                 {% endfor %}
             </tbody>

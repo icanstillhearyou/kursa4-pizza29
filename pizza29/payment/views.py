@@ -1,4 +1,3 @@
-# payment/views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from decimal import Decimal
 from orders.models import Order
@@ -6,20 +5,17 @@ from django.conf import settings
 from django.urls import reverse
 import stripe
 
-# Настройка Stripe
 stripe.api_key = settings.STRIPE_SECRET_KEY
 stripe.api_version = settings.STRIPE_API_VERSION
 
 def payment_process(request):
     order_id = request.session.get('order_id', None)
     if not order_id:
-        # Если order_id отсутствует в сессии, перенаправляем на страницу оформления заказа
         return redirect('orders:order_create')
 
     order = get_object_or_404(Order, id=order_id)
 
     if not order.items.exists():
-        # Если в заказе нет элементов, показываем ошибку или перенаправляем
         return render(request, 'payment/process.html', {
             'order': order,
             'error': 'Ваш заказ пуст. Пожалуйста, добавьте товары в корзину и оформите заказ заново.'
@@ -36,11 +32,10 @@ def payment_process(request):
             'line_items': []
         }
 
-        # Формируем элементы для Stripe Checkout
         for item in order.items.all():
             session_data['line_items'].append({
                 'price_data': {
-                    'unit_amount': int(item.price * Decimal('100')),  # Используем item.price
+                    'unit_amount': int(item.price * Decimal('100')),
                     'currency': 'rub',
                     'product_data': {
                         'name': f"{item.product.name} - {item.size.size.name} ({item.size.size.diameter} см)",
@@ -49,7 +44,6 @@ def payment_process(request):
                 'quantity': item.quantity,
             })
 
-        # Создаем сессию Stripe
         session = stripe.checkout.Session.create(**session_data)
         return redirect(session.url, code=303)
     else:
@@ -59,8 +53,11 @@ def payment_process(request):
         })
 
 def payment_completed(request):
-    # Очищаем order_id из сессии после успешной оплаты
-    if 'order_id' in request.session:
+    order_id = request.session.get('order_id', None)
+    if order_id:
+        order = get_object_or_404(Order, id=order_id)
+        order.paid = True  # Устанавливаем paid=True после успешной оплаты
+        order.save()
         del request.session['order_id']
     return render(request, 'payment/completed.html')
 

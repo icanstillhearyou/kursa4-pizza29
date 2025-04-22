@@ -56,7 +56,12 @@
             </div>
             <div class="cart-buttons d-flex gap-3">
                 <a href="/shop" class="cart-btn">Меню</a>
-                <a href="{% url "orders:order_create" %}" class="cart-btn">Оформить заказ</a>
+                {% comment %} <a href="{% url "orders:order_create" %}" class="cart-btn">Оформить заказ</a> {% endcomment %}
+                {% if user.is_authenticated and user.is_staff %}
+                    <a href="{% url "orders:admin_order_create" %}" class="cart-btn">Создать заказ</a>
+                {% else %}
+                    <a href="{% url "orders:order_create" %}" class="cart-btn">Оформить заказ</a>
+                {% endif %}
             </div>
         {% else %}
             <div class="empty-cart">

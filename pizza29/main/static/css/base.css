@@ -342,6 +342,16 @@ h5 {
     margin-top: 20px;
 }
 
+.cart-btn-admin {
+    width: 250px;
+    height: 50px;
+    border: 1px solid #00000027;
+    border-radius: 5px;
+    transition: all .4s ease;
+    z-index: 2;
+    margin-top: 20px;
+}
+
 .cart-btn:hover {
     border: 1px solid #000;
 }
@@ -634,6 +644,22 @@ h5 {
     border: 1px solid #000000;
 }
 
+.search-btn {
+    display: flex;
+    justify-content: center;
+
+    align-items: center;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #00000034;
+    margin-top: 20px;
+    transition: all 0.5s ease;
+}
+
+.search-btn:hover {
+    border: 1px solid #000000;
+}
+
 .reset-pass {
     margin-left: 40px;
     margin-top: 195px;
@@ -659,6 +685,14 @@ h5 {
 .profile2 {
     width: 570px;
     height: 690px;
+    margin-top: 100px;
+    border: 1px solid #00000036;
+    border-radius: 10px;
+}
+
+.profile3 {
+    width: 570px;
+    height: 760px;
     margin-top: 100px;
     border: 1px solid #00000036;
     border-radius: 10px;
