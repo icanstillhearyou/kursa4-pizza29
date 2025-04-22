@@ -5,11 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
-    {% comment %} ctrl + / {% endcomment %}
-    {% comment %} bootstrap {% endcomment %}
-    <link rel="stylesheet" href="{% static 'bootstrap\css\bootstrap.min.css' %}">
-    {% comment %} css {% endcomment %}
-    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1.0"> <!--Обновление страницы: ctrl + shift + r, если что убрать ?v=1.0-->
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=1.0">
 </head>
 <body>
     <header class="header sticky-top">
@@ -22,18 +19,26 @@
                     <li>
                         <a href="/shop" class="nav-a m-3">Меню</a>
                     </li>
+                    {% if user.is_authenticated and user.is_staff %}
+                        <li>
+                            <a href="{% url 'orders:admin_order_list' %}" class="nav-a m-3">Заказы</a>
+                        </li>
+                    {% endif %}
                 </ul>
             </navbar>
             <div class="header-logo">
                 <a href="/"><img src="{% static 'img/qwewqe.png' %}" alt="" class="heavy-logo"></a>
             </div>
             <div class="header-profile pt-2">
-                {% comment %} <a href="{% url "cart:cart_detail" %}"><img src="{% static 'img/cart1234.svg' %}" class="grob" alt=""></a> {% endcomment %}
-                <a href="{% url "cart:cart_detail" %}"><svg xmlns="http://www.w3.org/2000/svg" class="grob" viewBox="0 0 24 24"><path d="M8,3V7H21l-2,7H8v2H18a1,1,0,0,1,0,2H7a1,1,0,0,1-1-1V4H4A1,1,0,0,1,4,2H7A1,1,0,0,1,8,3ZM6,20.5A1.5,1.5,0,1,0,7.5,19,1.5,1.5,0,0,0,6,20.5Zm9,0A1.5,1.5,0,1,0,16.5,19,1.5,1.5,0,0,0,15,20.5Z"/></svg></a>
+                <a href="{% url 'cart:cart_detail' %}">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="grob" viewBox="0 0 24 24">
+                        <path d="M8,3V7H21l-2,7H8v2H18a1,1,0,0,1,0,2H7a1,1,0,0,1-1-1V4H4A1,1,0,0,1,4,2H7A1,1,0,0,1,8,3ZM6,20.5A1.5,1.5,0,1,0,7.5,19,1.5,1.5,0,0,0,6,20.5Zm9,0A1.5,1.5,0,1,0,16.5,19,1.5,1.5,0,0,0,15,20.5Z"/>
+                    </svg>
+                </a>
                 {% if user.is_authenticated %}
-                    <a href="{% url "users:profile" %}" class="m-2">Профиль</a>
+                    <a href="{% url 'users:profile' %}" class="m-2">Профиль</a>
                 {% else %}
-                    <a href="{% url "users:login" %}" class="m-2">Войти</a>
+                    <a href="{% url 'users:login' %}" class="m-2">Войти</a>
                 {% endif %}
                 <p class="cart-quantity">
                     {% with cart_quantity=cart|length %}
@@ -51,13 +56,6 @@
         {% block content %}
         {% endblock content %}
     </div>
-    {% comment %} узоры по краям {% endcomment %}
-    {% comment %} <img src="{% static 'img/frame1.png' %}" class="frame1" alt="">
-    <img src="{% static 'img/frame2.png' %}" class="frame2" alt="">
-    <img src="{% static 'img/frame3.png' %}" class="frame3" alt="">
-    <img src="{% static 'img/frame4.png' %}" class="frame4" alt=""> {% endcomment %}
-
-    {% comment %} js for bootstrap {% endcomment %}
-    <script src="{% static 'bootstrap\js\bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>
 </html>

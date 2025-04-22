@@ -39,3 +39,23 @@ class OrderCreateForm(forms.ModelForm):
         if commit:
             order.save()
         return order
+
+class OrderSearchForm(forms.Form):
+    search_query = forms.CharField(
+        max_length=100,
+        required=False,
+        label='Поиск',
+        widget=forms.TextInput(attrs={'placeholder': 'Поиск по номеру, имени или email'})
+    )
+    sort_by = forms.ChoiceField(
+        choices=[
+            ('-created', 'По дате (новые)'),
+            ('created', 'По дате (старые)'),
+            ('paid', 'Оплачено (сначала оплаченные)'),
+            ('-paid', 'Оплачено (сначала неоплаченные)'),
+            ('total_cost', 'По стоимости (возрастание)'),
+            ('-total_cost', 'По стоимости (убывание)'),
+        ],
+        required=False,
+        label='Сортировка'
+    )
