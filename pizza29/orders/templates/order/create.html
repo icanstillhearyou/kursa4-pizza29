@@ -4,39 +4,73 @@
 {% block title %}Оформление заказа{% endblock title %}
 
 {% block content %}
+    <style>
+        .errorlist {
+            display: inline-block;
+            color: red;
+            font-size: 12px;
+            margin-left: 13px;
+            vertical-align: middle;
+            list-style: none;
+            padding: 0;
+        }
+        .errorlist li {
+            margin: 0;
+        }
+        .field-with-error {
+            display: inline-flex;
+            align-items: center;
+            width: 100%;
+        }
+    </style>
     <div class="forcreate">
-        <div class="profile bg-white p-4 m-4 mx-2">
+        <div class="profile2 bg-white p-4 m-4 mx-2">
             <h2 class="mb-2">Оформить заказ</h2>
             <form action="" method="post" class="order-form">
                 {% csrf_token %}
                 <div class="col-md-12 mb-3">
                     <label for="id_first_name" class="form-label">Имя</label>
                     <input type="text" class="form-control form-styleprofile" id="id_first_name" 
-                    name="first_name" placeholder="Введите имя" value="{{ form.first_name.value|default:'' }}" required>
+                           name="first_name" placeholder="Введите имя" value="{{ form.first_name.value|default:'' }}" required>
+                    {{ form.first_name.errors }}
                 </div>
                 <div class="col-md-12 mb-3">
                     <label for="id_last_name" class="form-label">Фамилия</label>
                     <input type="text" class="form-control form-styleprofile" id="id_last_name" 
-                    name="last_name" placeholder="Введите фамилию" value="{{ form.last_name.value|default:'' }}" required>
+                           name="last_name" placeholder="Введите фамилию" value="{{ form.last_name.value|default:'' }}" required>
+                    {{ form.last_name.errors }}
                 </div>
                 <div class="col-md-12 mb-3">
                     <label for="id_email" class="form-label">Эл. почта</label>
                     <input type="text" class="form-control form-styleprofile" id="id_email" 
-                    name="email" placeholder="Введите эл. почту" value="{{ form.email.value|default:'' }}" required>
+                           name="email" placeholder="Введите эл. почту" value="{{ form.email.value|default:'' }}" required>
+                    {{ form.email.errors }}
+                </div>
+                <div class="col-md-12 mb-3">
+                    <label for="id_is_pickup" class="form-label d-block" style="display: block;">Самовывоз</label>
+                    <input type="checkbox" class="form-check-input" id="id_is_pickup" 
+                           name="is_pickup" {% if form.is_pickup.value %}checked{% endif %}
+                            style="width: 18px; height: 18px; margin-left: 0;">
+                    {{ form.is_pickup.errors }}
                 </div>
                 <div class="col-md-12 mb-3">
                     <label for="id_city" class="form-label">Город</label>
-                    <input type="text" class="form-control form-styleprofile" id="id_city" 
-                    name="city" placeholder="Введите город" value="{{ form.city.value|default:'' }}" required>
+                    <div class="field-with-error">
+                        <input type="text" class="form-control form-styleprofile" id="id_city" 
+                               name="city" placeholder="Введите город" value="{{ form.city.value|default:'' }}">
+                        {{ form.city.errors }}
+                    </div>
                 </div>
                 <div class="col-md-12 mb-3">
                     <label for="id_adress" class="form-label">Адрес</label>
-                    <input type="text" class="form-control form-styleprofile" id="id_adress" 
-                    name="adress" placeholder="Введите адрес" value="{{ form.adress.value|default:'' }}" required>
+                    <div class="field-with-error">
+                        <input type="text" class="form-control form-styleprofile" id="id_adress" 
+                               name="adress" placeholder="Введите адрес" value="{{ form.adress.value|default:'' }}">
+                        {{ form.adress.errors }}
+                    </div>
                 </div>
 
                 <p><input type="submit" value="Оформить заказ"></p>
-                {% csrf_token %}
             </form>
         </div>
         <div class="checkout">
@@ -47,8 +81,8 @@
                         {{ item.quantity }} x {{ item.product.name }}
                         <p>{{ item.total_price }} ₽</p>
                     </li>
-                    <p>Общая стоимость: {{ cart.get_total_price }} ₽</p>
                 {% endfor %}
+                <p>Общая стоимость: {{ cart.get_total_price }} ₽</p>
             </div>
         </div>
     </div>

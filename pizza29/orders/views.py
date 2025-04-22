@@ -1,4 +1,3 @@
-# orders/views.py
 from django.shortcuts import render, redirect
 from .models import OrderItem
 from .forms import OrderCreateForm
@@ -18,14 +17,11 @@ def order_create(request):
                     price=item['price'],
                     quantity=item['quantity']
                 )
-            # Сохраняем order_id в сессии
             request.session['order_id'] = order.id
             cart.clear()
-            # Перенаправляем на страницу оплаты
             return redirect('payment:process')
     else:
         form = OrderCreateForm(request=request)
-        return render(request,
-                      'order/create.html',
-                      {'cart': cart,
-                       'form': form})
+    return render(request,
+                  'order/create.html',
+                  {'cart': cart, 'form': form})

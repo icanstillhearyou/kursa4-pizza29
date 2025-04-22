@@ -22,7 +22,7 @@ class OrderItemInLine(admin.TabularInline):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ['id', 'first_name', 'last_name', 'email',
-                    'adress', 'city', 'paid',  # order_stripe_payment,
+                    'adress', 'city', 'is_pickup', 'paid',  # order_stripe_payment,
                     'created', 'updated']
     list_filter = ['paid', 'updated', 'created']
     inlines = [OrderItemInLine]

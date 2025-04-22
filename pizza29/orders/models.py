@@ -12,12 +12,12 @@ class Order(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.EmailField()
-    city = models.CharField(max_length=100)
-    adress = models.CharField(max_length=250)
+    city = models.CharField(max_length=100, blank=True)  # Пустое разрешено
+    adress = models.CharField(max_length=250, blank=True)  # Пустое разрешено
+    is_pickup = models.BooleanField(default=False, verbose_name='Самовывоз')  # Поле самовывоза
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
-    # stripe_id = models.CharField(max_length=250, blank=True)
 
     class Meta:
         ordering = ['-created']
@@ -27,7 +27,7 @@ class Order(models.Model):
 
     def __str__(self):
         return f'Заказ №{self.id}'
-    
+
     def get_total_cost(self):
         return sum(item.get_cost() for item in self.items.all())
     
