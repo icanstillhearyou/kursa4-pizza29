@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,6 +33,14 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "unfold",  # before django.contrib.admin
+    "unfold.contrib.filters",  # optional, if special filters are needed
+    "unfold.contrib.forms",  # optional, if special form elements are needed
+    "unfold.contrib.inlines",  # optional, if special inlines are needed
+    "unfold.contrib.import_export",  # optional, if django-import-export package is used
+    "unfold.contrib.guardian",  # optional, if django-guardian package is used
+    "unfold.contrib.simple_history",
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -115,18 +125,22 @@ AUTH_PASSWORD_VALIDATORS = [
 
 #LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'Ru-ru'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Europe/Moscow'
 USE_I18N = True
-
 USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+# STATIC_URL = 'static/'
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+ 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -148,3 +162,30 @@ STRIPE_SECRET_KEY = 'sk_test_51R7ejp1CSfep18ojeOsME3tvmOfTRwezEB3ZnJABl4LaC1nNSw
 STRIPE_API_VERSION = '2022-08-01'
 
 STRIPE_WEBHOOK_SECRET = 'whsec_872e2433b6b1598acf424ac32f5a60066e496856964643f65cd3044ccde858ad'
+
+from django.templatetags.static import static
+
+UNFOLD = {
+    "SITE_HEADER": "Admin",
+    "SITE_TITLE": "Pizza29 Admin",
+    # Попробуйте явно включить стандартное поведение ссылок
+    "SHOW_VIEW_ON_SITE": True,
+    "SHOW_BACK_BUTTON": True,
+    "SITE_ICON": {
+        "light": lambda request: static("img/qwewqe.png"), 
+        "dark": lambda request: static("img/qwewqe.png"), # light mode
+    },
+
+    # "SITE_LOGO": {
+    #     "light": lambda request: static("img/qwewqe.png"),
+    #     "dark": lambda request: static("img/qwewqe.png"),
+    # },
+        "SITE_FAVICONS": [
+        {
+            "rel": "icon",
+            "sizes": "32x32",
+            "type": "image/png",
+            "href": lambda request: static("img/favicon1.png"),
+        },
+    ],
+}

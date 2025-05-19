@@ -1,26 +1,28 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
+from unfold.admin import TabularInline
 from .models import *
 
 
 @admin.register(Category)
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(ModelAdmin):
     list_display = ['name', 'slug']
     prepopulated_fields = {'slug': ('name',)}
 
 
 @admin.register(Size)
-class SizeAdmin(admin.ModelAdmin):
+class SizeAdmin(ModelAdmin):
     list_display = ['name', 'diameter']
     ordering = ['diameter']
 
 
-class ProductSizeInline(admin.TabularInline):
+class ProductSizeInline(TabularInline):
     model = ProductSize
     extra = 1  # Количество пустых форм для добавления
 
 
 @admin.register(Product)
-class ProductAdmin(admin.ModelAdmin):
+class ProductAdmin(ModelAdmin):
     list_display = ['name', 'slug', 'available', 'created', 'updated']
     list_filter = ['available', 'created', 'updated']
     list_editable = ['available']
@@ -29,18 +31,18 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 @admin.register(ProductSize)
-class ProductSizeAdmin(admin.ModelAdmin):
+class ProductSizeAdmin(ModelAdmin):
     list_display = ['product', 'size']
     list_filter = ['product', 'size']
 
 
-class PriceListItemInline(admin.TabularInline):
+class PriceListItemInline(TabularInline):
     model = PriceListItem
     extra = 1
 
 
 @admin.register(PriceList)
-class PriceListAdmin(admin.ModelAdmin):
+class PriceListAdmin(ModelAdmin):
     list_display = ['name', 'created', 'updated', 'is_active']
     list_filter = ['is_active', 'created', 'updated']
     list_editable = ['is_active']
@@ -48,7 +50,7 @@ class PriceListAdmin(admin.ModelAdmin):
 
 
 @admin.register(PriceListItem)
-class PriceListItemAdmin(admin.ModelAdmin):
+class PriceListItemAdmin(ModelAdmin):
     list_display = ['price_list', 'product_size', 'price', 'discount', 'sell_price']
     list_filter = ['price_list']
     list_editable = ['price', 'discount']

@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 
 class Category(models.Model):
-    name = models.CharField(max_length=20, unique=True)
+    name = models.CharField(max_length=20, unique=True, verbose_name = 'Название')
     slug = models.SlugField(max_length=20, unique=True)
     
     class Meta:
@@ -18,8 +18,8 @@ class Category(models.Model):
         return self.name
 
 class Size(models.Model):
-    name = models.CharField(max_length=20)
-    diameter = models.PositiveIntegerField()
+    name = models.CharField(max_length=20, verbose_name = 'Название')
+    diameter = models.PositiveIntegerField(verbose_name = 'Диаметр')
     
     class Meta:
         ordering = ['diameter']
@@ -32,16 +32,16 @@ class Size(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category,
                                related_name='products',
-                               on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
+                               on_delete=models.CASCADE, verbose_name = 'Категория')
+    name = models.CharField(max_length=50, verbose_name = 'Название')
     slug = models.SlugField(max_length=50)
     image = models.ImageField(upload_to='products/%Y/%m/%d',
-                            blank=True)
-    description = models.TextField(blank=True)
-    available = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    sizes = models.ManyToManyField(Size, through='ProductSize', related_name='products')
+                            blank=True, verbose_name = 'Изображение')
+    description = models.TextField(blank=True, verbose_name = 'Описание')
+    available = models.BooleanField(default=True, verbose_name = 'Доступен')
+    created = models.DateTimeField(auto_now_add=True, verbose_name = 'Дата создания')
+    updated = models.DateTimeField(auto_now=True, verbose_name = 'Дата изменения')
+    sizes = models.ManyToManyField(Size, through='ProductSize', related_name='products', verbose_name = 'Размер')
     
     class Meta:
         ordering = ['name']
@@ -60,8 +60,8 @@ class Product(models.Model):
         return reverse('main:product_detail', args=[self.slug])
 
 class ProductSize(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    size = models.ForeignKey(Size, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name = 'Продукт')
+    size = models.ForeignKey(Size, on_delete=models.CASCADE, verbose_name = 'Размер')
     
     class Meta:
         unique_together = ('product', 'size')
@@ -72,10 +72,10 @@ class ProductSize(models.Model):
         return f"{self.product} - {self.size}"
 
 class PriceList(models.Model):
-    name = models.CharField(max_length=50)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)
+    name = models.CharField(max_length=50, verbose_name = 'Название')
+    created = models.DateTimeField(auto_now_add=True, verbose_name = 'Дата создания')
+    updated = models.DateTimeField(auto_now=True, verbose_name = 'Дата изменения')
+    is_active = models.BooleanField(default=True, verbose_name = 'Активный')
     
     class Meta:
         ordering = ['-created']
@@ -88,14 +88,14 @@ class PriceList(models.Model):
 class PriceListItem(models.Model):
     price_list = models.ForeignKey(PriceList,
                                  related_name='items',
-                                 on_delete=models.CASCADE)
+                                 on_delete=models.CASCADE, verbose_name = 'Прайс-лист')
     product_size = models.ForeignKey(ProductSize,
                                    related_name='prices',
-                                   on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+                                   on_delete=models.CASCADE, verbose_name = 'Размер')
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = 'Цена')
     discount = models.DecimalField(default=0.00,
                                  max_digits=4,
-                                 decimal_places=2)
+                                 decimal_places=2, verbose_name = 'Скидка')
     
     class Meta:
         unique_together = ('price_list', 'product_size')

@@ -1,11 +1,12 @@
 # orders/admin.py
 from django.contrib import admin
+from unfold.admin import ModelAdmin, TabularInline
 from .models import Order, OrderItem
 from django.utils.safestring import mark_safe
 
 # Register your models here.
 
-class OrderItemInLine(admin.TabularInline):
+class OrderItemInLine(TabularInline):
     model = OrderItem
     raw_id_fields = ['product']
     fields = ['product', 'size', 'price', 'quantity']  # Добавляем size в отображаемые поля
@@ -20,9 +21,10 @@ class OrderItemInLine(admin.TabularInline):
 # order_stripe_payment.short_description = 'Stripe_payment'
 
 @admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(ModelAdmin):
     list_display = ['id', 'first_name', 'last_name', 'email',
-                    'adress', 'city', 'is_pickup', 'paid',  # order_stripe_payment,
+                    'adress', 'city', 'is_pickup', 'paid', 'status',  # order_stripe_payment,
                     'created', 'updated']
-    list_filter = ['paid', 'updated', 'created']
+    list_filter = ['paid','status', 'updated', 'created']
+    list_editable = ['status']
     inlines = [OrderItemInLine]
