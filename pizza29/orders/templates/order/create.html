@@ -1,90 +1,184 @@
 {% extends "main/base.html" %}
 {% load static %}
-
 {% block title %}Оформление заказа{% endblock title %}
-
 {% block content %}
-    <style>
-        .errorlist {
-            display: inline-block;
-            color: red;
-            font-size: 12px;
-            margin-left: 13px;
-            vertical-align: middle;
-            list-style: none;
-            padding: 0;
-        }
-        .errorlist li {
-            margin: 0;
-        }
-        .field-with-error {
-            display: inline-flex;
-            align-items: center;
-            width: 100%;
-        }
-    </style>
-    <div class="forcreate">
-        <div class="profile2 bg-white p-4 m-4 mx-2">
-            <h2 class="mb-2">Оформить заказ</h2>
-            <form action="" method="post" class="order-form">
-                {% csrf_token %}
-                <div class="col-md-12 mb-3">
-                    <label for="id_first_name" class="form-label">Имя</label>
-                    <input type="text" class="form-control form-styleprofile" id="id_first_name" 
-                           name="first_name" placeholder="Введите имя" value="{{ form.first_name.value|default:'' }}" required>
-                    {{ form.first_name.errors }}
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label for="id_last_name" class="form-label">Фамилия</label>
-                    <input type="text" class="form-control form-styleprofile" id="id_last_name" 
-                           name="last_name" placeholder="Введите фамилию" value="{{ form.last_name.value|default:'' }}" required>
-                    {{ form.last_name.errors }}
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label for="id_email" class="form-label">Эл. почта</label>
-                    <input type="text" class="form-control form-styleprofile" id="id_email" 
-                           name="email" placeholder="Введите эл. почту" value="{{ form.email.value|default:'' }}" required>
-                    {{ form.email.errors }}
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label for="id_is_pickup" class="form-label d-block" style="display: block;">Самовывоз</label>
-                    <input type="checkbox" class="form-check-input" id="id_is_pickup" 
-                           name="is_pickup" {% if form.is_pickup.value %}checked{% endif %}
-                            style="width: 18px; height: 18px; margin-left: 0;">
-                    {{ form.is_pickup.errors }}
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label for="id_city" class="form-label">Город</label>
-                    <div class="field-with-error">
-                        <input type="text" class="form-control form-styleprofile" id="id_city" 
-                               name="city" placeholder="Введите город" value="{{ form.city.value|default:'' }}">
-                        {{ form.city.errors }}
-                    </div>
-                </div>
-                <div class="col-md-12 mb-3">
-                    <label for="id_adress" class="form-label">Адрес</label>
-                    <div class="field-with-error">
-                        <input type="text" class="form-control form-styleprofile" id="id_adress" 
-                               name="adress" placeholder="Введите адрес" value="{{ form.adress.value|default:'' }}">
-                        {{ form.adress.errors }}
-                    </div>
-                </div>
-
-                <p><input type="submit" value="Оформить заказ"></p>
-                {% csrf_token %}
-            </form>
-        </div>
-        <div class="checkout">
-            <h1>Оформление заказа</h1>
-            <div class="order-info">
-                {% for item in cart %}
-                    <li>
-                        {{ item.quantity }} x {{ item.product.name }}
-                        <p>{{ item.total_price }} ₽</p>
-                    </li>
-                {% endfor %}
-                <p>Общая стоимость: {{ cart.get_total_price }} ₽</p>
+<style>
+    .errorlist {
+        display: inline-block;
+        color: red;
+        font-size: 12px;
+        margin-left: 13px;
+        vertical-align: middle;
+        list-style: none;
+        padding: 0;
+    }
+    .errorlist li {
+        margin: 0;
+    }
+    .field-with-error {
+        display: inline-flex;
+        align-items: center;
+        width: 100%;
+    }
+    #map {
+        width: 100%;
+        height: 400px;
+        display: none;
+        border: 1px solid red; /* Для видимости */
+    }
+    .map-container {
+        margin-top: 10px;
+    }
+</style>
+<div class="forcreate">
+    <div class="profile4 bg-white p-4 m-4 mx-2">
+        <h2 class="mb-2">Оформить заказ</h2>
+        <form action="" method="post" class="order-form">
+            {% csrf_token %}
+            <div class="col-md-12 mb-3">
+                <label for="id_first_name" class="form-label">Имя</label>
+                <input type="text" class="form-control form-styleprofile" id="id_first_name" 
+                       name="first_name" placeholder="Введите имя" value="{{ form.first_name.value|default:'' }}" required>
+                {{ form.first_name.errors }}
             </div>
+            <div class="col-md-12 mb-3">
+                <label for="id_last_name" class="form-label">Фамилия</label>
+                <input type="text" class="form-control form-styleprofile" id="id_last_name" 
+                       name="last_name" placeholder="Введите фамилию" value="{{ form.last_name.value|default:'' }}" required>
+                {{ form.last_name.errors }}
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="id_email" class="form-label">Эл. почта</label>
+                <input type="text" class="form-control form-styleprofile" id="id_email" 
+                       name="email" placeholder="Введите эл. почту" value="{{ form.email.value|default:'' }}" required>
+                {{ form.email.errors }}
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="id_is_pickup" class="form-label d-block" style="display: block;">Самовывоз</label>
+                <input type="checkbox" class="form-check-input" id="id_is_pickup" 
+                       name="is_pickup" {% if form.is_pickup.value %}checked{% endif %}
+                       style="width: 18px; height: 18px; margin-left: 0;">
+                {{ form.is_pickup.errors }}
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="id_city" class="form-label">Город</label>
+                <div class="field-with-error">
+                    <input type="text" class="form-control form-styleprofile" id="id_city" 
+                           name="city" placeholder="Введите город" value="{{ form.city.value|default:'' }}" readonly>
+                    {{ form.city.errors }}
+                </div>
+            </div>
+            <div class="col-md-12 mb-3">
+                <label for="id_adress" class="form-label">Адрес</label>
+                <div class="field-with-error">
+                    <input type="text" class="form-control form-styleprofile" id="id_adress" 
+                           name="adress" style="width: 600px;" placeholder="Введите адрес" value="{{ form.adress.value|default:'' }}" readonly>
+                    {{ form.adress.errors }}
+                </div>
+            </div>
+            <div class="col-md-12 mb-3 map-container">
+                <button type="button" id="openMap" class="btn btn-primary">Выбрать адрес на карте</button>
+                <div id="map"></div>
+            </div>
+            <p><input type="submit" value="Оформить заказ" class="order-btn" style="width: 205px; margin-top: 10px;"></p>
+        </form>
+    </div>
+    <div class="checkout">
+        <h1>Оформление заказа</h1>
+        <div class="order-info">
+            {% for item in cart %}
+                <li>
+                    {{ item.quantity }} x {{ item.product.name }}
+                    <p>{{ item.total_price }} ₽</p>
+                </li>
+            {% endfor %}
+            <p>Общая стоимость: {{ cart.get_total_price }} ₽</p>
         </div>
     </div>
+</div>
+
+<!-- Подключение Яндекс Карт API -->
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=875650db-9ea1-412d-865a-382a9e775064"></script>
+<script>
+    console.log('Скрипт Яндекс Карт загружен');
+    if (typeof ymaps === 'undefined') {
+        console.error('Яндекс Карты API не загружен');
+    } else {
+        console.log('Яндекс Карты API готов');
+        ymaps.ready(init);
+    }
+
+    function init() {
+        console.log('Инициализация карты начата');
+        var myMap;
+
+        var openMapButton = document.getElementById('openMap');
+        if (openMapButton) {
+            console.log('Кнопка openMap найдена');
+            openMapButton.addEventListener('click', function() {
+                console.log('Кнопка openMap нажата');
+                var mapDiv = document.getElementById('map');
+                mapDiv.style.display = 'block';
+                console.log('Карта отображена');
+
+                try {
+                    myMap = new ymaps.Map("map", {
+                        center: [64.5635, 39.8302],
+                        zoom: 12
+                    });
+                    console.log('Карта инициализирована');
+
+                    var searchControl = new ymaps.control.SearchControl({
+                        options: {
+                            provider: 'yandex#search'
+                        }
+                    });
+                    myMap.controls.add(searchControl);
+                    console.log('Поиск добавлен');
+
+                    myMap.events.add('click', function (e) {
+                        console.log('Клик по карте');
+                        var coords = e.get('coords');
+
+                        ymaps.geocode(coords).then(function (res) {
+                            var firstGeoObject = res.geoObjects.get(0);
+                            var address = firstGeoObject.getAddressLine();
+                            var city = firstGeoObject.getLocalities()[0] || '';
+
+                            document.getElementById('id_city').value = city;
+                            document.getElementById('id_adress').value = address;
+                            console.log('Поля формы заполнены:', city, address);
+
+                            mapDiv.style.display = 'none';
+                            myMap.destroy();
+                            console.log('Карта скрыта и уничтожена');
+                        }).catch(function (err) {
+                            console.error('Ошибка геокодирования:', err);
+                        });
+                    });
+                } catch (error) {
+                    console.error('Ошибка инициализации карты:', error);
+                }
+            });
+        } else {
+            console.error('Кнопка openMap не найдена');
+        }
+    }
+
+    // Обработка самовывоза
+    document.getElementById('id_is_pickup').addEventListener('change', function() {
+        var cityField = document.querySelector('.col-md-12_mb-3:nth-child(5)');
+        var addressField = document.querySelector('.col-md-12_mb-3:nth-child(6)');
+        var mapButton = document.querySelector('#openMap');
+        if (this.checked) {
+            cityField.style.display = 'none';
+            addressField.style.display = 'none';
+            mapButton.style.display = 'none';
+        } else {
+            cityField.style.display = 'block';
+            addressField.style.display = 'block';
+            mapButton.style.display = 'block';
+        }
+    });
+</script>
 {% endblock content %}
