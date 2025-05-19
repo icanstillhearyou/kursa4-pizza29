@@ -30,8 +30,8 @@
         margin-top: 10px;
     }
 </style>
-<div class="forcreate">
-    <div class="profile4 bg-white p-4 m-4 mx-2">
+<div class="forcreate d-flex gap-5">
+    <div class="profile4 bg-white p-5 m-4 mx-2">
         <h2 class="mb-2">Оформить заказ</h2>
         <form action="" method="post" class="order-form">
             {% csrf_token %}
@@ -64,7 +64,7 @@
                 <label for="id_city" class="form-label">Город</label>
                 <div class="field-with-error">
                     <input type="text" class="form-control form-styleprofile" id="id_city" 
-                           name="city" placeholder="Введите город" value="{{ form.city.value|default:'' }}" readonly>
+                           name="city" placeholder="Введите город" value="{{ form.city.value|default:'' }}">
                     {{ form.city.errors }}
                 </div>
             </div>
@@ -72,15 +72,19 @@
                 <label for="id_adress" class="form-label">Адрес</label>
                 <div class="field-with-error">
                     <input type="text" class="form-control form-styleprofile" id="id_adress" 
-                           name="adress" style="width: 600px;" placeholder="Введите адрес" value="{{ form.adress.value|default:'' }}" readonly>
+                           name="adress" placeholder="Введите адрес" value="{{ form.adress.value|default:'' }}">
                     {{ form.adress.errors }}
                 </div>
             </div>
             <div class="col-md-12 mb-3 map-container">
-                <button type="button" id="openMap" class="btn btn-primary">Выбрать адрес на карте</button>
-                <div id="map"></div>
+                <button type="button" id="openMap" class="order-btn" style="width: 235px; height: 40px; padding: 1px 6px; background-color: #ffcc00;">Выбрать адрес на карте</button>
+                <div id="map" style="margin-top: 10px; margin-bottom: 10px; position: absolute;
+height: 500px;
+width: 500px;
+z-index: 1000;
+background: white;"></div>
             </div>
-            <p><input type="submit" value="Оформить заказ" class="order-btn" style="width: 205px; margin-top: 10px;"></p>
+            <p><input type="submit" value="Оформить заказ" class="order-btn" style="width: 235px; margin-top: 10px;"></p>
         </form>
     </div>
     <div class="checkout">
@@ -141,13 +145,24 @@
                         var coords = e.get('coords');
 
                         ymaps.geocode(coords).then(function (res) {
-                            var firstGeoObject = res.geoObjects.get(0);
+                            /*var firstGeoObject = res.geoObjects.get(0);
                             var address = firstGeoObject.getAddressLine();
                             var city = firstGeoObject.getLocalities()[0] || '';
 
                             document.getElementById('id_city').value = city;
                             document.getElementById('id_adress').value = address;
-                            console.log('Поля формы заполнены:', city, address);
+                            console.log('Поля формы заполнены:', city, address);*/
+
+                            var firstGeoObject = res.geoObjects.get(0);
+                            var city = firstGeoObject.getLocalities()[0] || 'Северодвинск';
+                            
+                            var street = firstGeoObject.getThoroughfare() || '';
+                            var house = firstGeoObject.getPremiseNumber() || '';
+                            var shortAddress = street && house ? `${street}, ${house}` : street || house || firstGeoObject.getAddressLine();
+
+                            document.getElementById('id_city').value = city;
+                            document.getElementById('id_adress').value = shortAddress;
+                            console.log('Поля формы заполнены:', city, shortAddress);
 
                             mapDiv.style.display = 'none';
                             myMap.destroy();
