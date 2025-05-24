@@ -21,9 +21,14 @@
                     <li>
                         <a href="/shop" class="nav-a m-3">Меню</a>
                     </li>
-                    {% if user.is_authenticated and user.is_staff %}
+                    {% comment %} {% if user.is_authenticated and user.is_staff %}
                         <li>
                             <a href="{% url 'orders:admin_order_list' %}" class="nav-a m-3">Заказы</a>
+                        </li>
+                    {% endif %} {% endcomment %}
+                    {% if user.is_authenticated and user.is_staff %}
+                        <li>
+                            <a href="admin/orders/order/" class="nav-a m-3">Заказы</a>
                         </li>
                     {% endif %}
                 </ul>

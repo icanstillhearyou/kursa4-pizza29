@@ -19,7 +19,7 @@ class Category(models.Model):
 
 class Size(models.Model):
     name = models.CharField(max_length=20, verbose_name = 'Название')
-    diameter = models.PositiveIntegerField(verbose_name = 'Диаметр')
+    diameter = models.PositiveIntegerField(verbose_name = 'Диаметр, см')
     
     class Meta:
         ordering = ['diameter']
@@ -92,10 +92,10 @@ class PriceListItem(models.Model):
     product_size = models.ForeignKey(ProductSize,
                                    related_name='prices',
                                    on_delete=models.CASCADE, verbose_name = 'Размер')
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = 'Цена')
+    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name = 'Цена, руб.')
     discount = models.DecimalField(default=0.00,
                                  max_digits=4,
-                                 decimal_places=2, verbose_name = 'Скидка')
+                                 decimal_places=2, verbose_name = 'Скидка, %')
     
     class Meta:
         unique_together = ('price_list', 'product_size')

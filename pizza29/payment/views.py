@@ -24,12 +24,17 @@ def payment_process(request):
     if request.method == 'POST':
         success_url = request.build_absolute_uri(reverse('payment:completed'))
         cancel_url = request.build_absolute_uri(reverse('payment:canceled'))
+
+        # Получаем email пользователя из профиля
+        user_email = request.user.email if request.user.is_authenticated else None
         session_data = {
             'mode': 'payment',
             'client_reference_id': str(order.id),
             'success_url': success_url,
             'cancel_url': cancel_url,
-            'line_items': []
+            'line_items': [],
+            # Добавляем email в session_data, если он есть
+            **({'customer_email': user_email} if user_email else {}),
         }
 
         for item in order.items.all():
