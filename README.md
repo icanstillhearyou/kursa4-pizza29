@@ -9,14 +9,12 @@
 # 1. Структура проекта
 
 ```
-
 project/
 ├── .env.example
 ├── docker-compose.yml
 ├── Dockerfile
 ├── requirements.txt
 └── src/
-
 ```
 
 ---
@@ -24,7 +22,6 @@ project/
 # 2. Файл `.env.example`
 
 ```
-
 POSTGRES_DB=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
@@ -32,7 +29,6 @@ POSTGRES_HOST=db
 
 DJANGO_SECRET_KEY=your-secret-key
 DJANGO_DEBUG=True
-
 ````
 
 ---
