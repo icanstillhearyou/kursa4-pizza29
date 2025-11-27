@@ -24,16 +24,20 @@ class ProductSizeInline(TabularInline):
 @admin.register(Product)
 class ProductAdmin(ModelAdmin):
     list_display = ['name', 'slug', 'available', 'created', 'updated']
+    search_fields = ['name']
     list_filter = ['available', 'created', 'updated']
     list_editable = ['available']
     prepopulated_fields = {'slug': ('name',)}
     inlines = [ProductSizeInline]  # Добавляем возможность редактировать размеры прямо в продукте
+    search_help_text = "Введите название продукта"
 
 
 @admin.register(ProductSize)
 class ProductSizeAdmin(ModelAdmin):
     list_display = ['product', 'size']
     list_filter = ['product', 'size']
+    search_fields = ['product']
+    search_help_text = "Введите название продукта"
 
 
 class PriceListItemInline(TabularInline):

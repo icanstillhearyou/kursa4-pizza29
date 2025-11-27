@@ -28,3 +28,5 @@ class OrderAdmin(ModelAdmin):
     list_filter = ['paid','status', 'updated', 'created']
     list_editable = ['status']
     inlines = [OrderItemInLine]
+    search_fields = ['first_name', 'last_name', 'email',]
+    search_help_text = "Введите имя, фамилию или email"
