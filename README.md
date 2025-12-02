@@ -39,46 +39,11 @@ docker compose version
 
 ## Установка проекта
 
-### 1. Клонируйте репозиторий
+### Клонируйте репозиторий
 ```
-git clone <URL_вашего_репозитория>
-cd pizza29
+git clone https://github.com/icanstillhearyou/kursa4-pizza29.git
+cd kursa4-pizza29/pizza29
 ```
-
-### 2. Создайте файл .env
-
-Создайте файл `.env` в корневой директории проекта со следующим содержимым:
-
-```
-# PostgreSQL Database
-POSTGRES_DB=pizza29_db
-POSTGRES_USER=pizza29_user
-POSTGRES_PASSWORD=your_secure_password_here
-
-# Django Settings
-SECRET_KEY=your-secret-key-here
-DEBUG=False
-ALLOWED_HOSTS=localhost,127.0.0.1,your-domain.com
-
-# Database Connection
-DB_NAME=pizza29_db
-DB_USER=pizza29_user
-DB_PASSWORD=your_secure_password_here
-DB_HOST=db
-DB_PORT=5432
-```
-
-**⚠️ Важно:** Замените `your_secure_password_here` и `your-secret-key-here` на свои значения!
-
-### 3. Создайте SECRET_KEY для Django
-
-Сгенерируйте новый SECRET_KEY:
-```
-python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
-```
-
-Скопируйте полученный ключ и вставьте в `.env` файл.
-
 ## Запуск проекта
 
 ### 1. Соберите и запустите контейнеры
