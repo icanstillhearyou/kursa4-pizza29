@@ -3,12 +3,14 @@ FROM python:3.10-slim
 WORKDIR /app
 
 ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1
+    PYTHONDONTWRITEBYTECODE=1 \
+    http_proxy="http://sev-proxy.narfu.ru:3128" \
+    https_proxy="http://sev-proxy.narfu.ru:3128"
 
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     gcc \
-    gettext \  
+    gettext \
     vim \
     && rm -rf /var/lib/apt/lists/*
 
@@ -21,3 +23,4 @@ COPY . .
 EXPOSE 8000
 
 CMD ["sh", "-c", "python manage.py migrate && gunicorn pizza29.wsgi:application --bind 0.0.0.0:8000"]
+
