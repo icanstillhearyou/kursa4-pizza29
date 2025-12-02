@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-1cf3dc4du(3ir2i!m$&1t@yez$m%_o3^mbve+m(_o$zejfgok1'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'django-insecure-1cf3dc4du(3ir2i!m$&1t@yez$m%_o3^mbve+m(_o$zejfgok1')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -92,11 +92,11 @@ WSGI_APPLICATION = 'pizza29.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pizza29',
-        'USER': 'pizza29',
-        'PASSWORD': 'pizza29',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('POSTGRES_DB', 'pizza29'),
+        'USER': os.getenv('POSTGRES_USER', 'pizza29'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'pizza29'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),  # 'db' в Docker
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
 

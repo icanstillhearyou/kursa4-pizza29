@@ -1,204 +1,234 @@
+Вот подробный README.md для вашего проекта:
 
-# Django + PostgreSQL + Docker  
-Инструкция по запуску проекта двумя способами:  
-1) Через **готовые Docker-образы**, которые передаёшь другу.  
-2) Через **GitHub**, где друг сам собирает контейнеры.
+```markdown
+# Pizza29 - Django E-commerce Project
 
----
+Веб-приложение для интернет-магазина на Django с использованием Docker, PostgreSQL и Nginx.
 
-# 1. Структура проекта
+## Технологии
 
+- Python 3.10
+- Django
+- PostgreSQL
+- Gunicorn
+- Nginx
+- Docker & Docker Compose
+
+## Требования
+
+- Ubuntu 20.04+ (или другой Linux дистрибутив)
+- Docker 20.10+
+- Docker Compose 2.0+
+
+## Установка Docker и Docker Compose на Ubuntu
+
+### 1. Обновите систему
 ```
-project/
-├── .env.example
-├── docker-compose.yml
-├── Dockerfile
-├── requirements.txt
-└── src/
-```
-
----
-
-# 2. Файл `.env.example`
-
-```
-POSTGRES_DB=postgres
-POSTGRES_USER=postgres
-POSTGRES_PASSWORD=postgres
-POSTGRES_HOST=db
-
-DJANGO_SECRET_KEY=your-secret-key
-DJANGO_DEBUG=True
-````
-
----
-
-# 3. Dockerfile
-
-```dockerfile
-FROM python:3.12-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . .
-
-ENV PYTHONUNBUFFERED=1
-
-CMD ["python", "src/manage.py", "runserver", "0.0.0.0:8000"]
-````
-
----
-
-# 4. docker-compose.yml
-
-```yaml
-version: '3.9'
-
-services:
-  web:
-    build: .
-    container_name: django_app
-    env_file:
-      - .env
-    command: python src/manage.py runserver 0.0.0.0:8000
-    volumes:
-      - .:/app
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-
-  db:
-    image: postgres:16
-    container_name: postgres_db
-    env_file:
-      - .env
-    volumes:
-      - pg_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
-
-volumes:
-  pg_data:
+sudo apt update
+sudo apt upgrade -y
 ```
 
----
-
-# 5. Инструкция для **тебя**: передача проекта через готовые образы
-
-## 5.1 Собери образы
-
+### 2. Установите зависимости
 ```
-docker build -t my-django .
-docker save my-django > django.tar
-docker save postgres:16 > postgres.tar
+sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
 ```
 
-## 5.2 Передай другу:
-
+### 3. Добавьте официальный репозиторий Docker
 ```
-django.tar
-postgres.tar
-docker-compose.yml
-.env.example -> .env
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
 
-Друг создаёт `.env` вручную или копирует из примера.
-
----
-
-# 6. Инструкция для **друга**, если он получил готовые образы
-
-## 6.1 Загрузить образы
-
+### 4. Установите Docker
 ```
-docker load < django.tar
-docker load < postgres.tar
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
 ```
 
-## 6.2 Создать файл `.env`
-
+### 5. Добавьте текущего пользователя в группу docker
 ```
-cp .env.example .env
-```
-
-## 6.3 Запустить контейнеры
-
-```
-docker-compose up
+sudo usermod -aG docker $USER
+newgrp docker
 ```
 
-## 6.4 Выполнить миграции
-
+### 6. Проверьте установку
 ```
-docker-compose run web python src/manage.py migrate
-```
-
-## 6.5 Запуск приложения
-
-```
-docker-compose up
+docker --version
+docker compose version
 ```
 
-Доступ:
-[http://localhost:8000](http://localhost:8000)
+## Установка проекта
 
----
-
-# 7. Инструкция для **друга**, если он скачал проект с GitHub
-
-## 7.1 Склонировать репозиторий
-
+### 1. Клонируйте репозиторий
 ```
-git clone https://github.com/you/your-repo.git
-cd your-repo
+git clone <URL_вашего_репозитория>
+cd pizza29
 ```
 
-## 7.2 Создать `.env`
+### 2. Создайте файл .env
+
+Создайте файл `.env` в корневой директории проекта со следующим содержимым:
 
 ```
-cp .env.example .env
+# PostgreSQL Database
+POSTGRES_DB=pizza29_db
+POSTGRES_USER=pizza29_user
+POSTGRES_PASSWORD=your_secure_password_here
+
+# Django Settings
+SECRET_KEY=your-secret-key-here
+DEBUG=False
+ALLOWED_HOSTS=localhost,127.0.0.1,your-domain.com
+
+# Database Connection
+DB_NAME=pizza29_db
+DB_USER=pizza29_user
+DB_PASSWORD=your_secure_password_here
+DB_HOST=db
+DB_PORT=5432
 ```
 
-## 7.3 Запустить сборку и запуск контейнеров
+**⚠️ Важно:** Замените `your_secure_password_here` и `your-secret-key-here` на свои значения!
 
-```
-docker-compose up --build
-```
+### 3. Создайте SECRET_KEY для Django
 
-## 7.4 Применить миграции
-
+Сгенерируйте новый SECRET_KEY:
 ```
-docker-compose run web python src/manage.py migrate
+python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
 ```
 
-## 7.5 Запуск приложения
+Скопируйте полученный ключ и вставьте в `.env` файл.
 
-Если контейнеры были остановлены:
+## Запуск проекта
 
+### 1. Соберите и запустите контейнеры
 ```
-docker-compose up
-```
-
-Доступ:
-[http://localhost:8000](http://localhost:8000)
-
----
-
-# 8. Остановка контейнеров
-
-```
-docker-compose down
+docker compose up -d --build
 ```
 
----
+### 2. Примените миграции базы данных
+```
+docker compose exec web python manage.py migrate
+```
 
-# 9. Примечания
+### 3. Соберите статические файлы
+```
+docker compose exec web python manage.py collectstatic --noinput
+```
 
-1. `.env` не должен храниться в репозитории.
-2. PostgreSQL-контейнер весит около 400 МБ, Django — 80–150 МБ.
-3. Если нужно уменьшить размер образов, можно использовать более лёгкие Python-базы или SQLite для разработки.
+### 4. Создайте суперпользователя (опционально)
+```
+docker compose exec web python manage.py createsuperuser
+```
+
+### 5. Проверьте работу
+Откройте браузер и перейдите по адресу:
+- Основной сайт: http://localhost
+- Админ-панель: http://localhost/admin
+
+## Полезные команды
+
+### Просмотр логов
+```
+# Все сервисы
+docker compose logs -f
+
+# Только Django
+docker compose logs -f web
+
+# Только Nginx
+docker compose logs -f nginx
+
+# Только PostgreSQL
+docker compose logs -f db
+```
+
+### Остановка проекта
+```
+docker compose down
+```
+
+### Перезапуск проекта
+```
+docker compose restart
+```
+
+### Выполнение команд Django
+```
+# Любая management команда
+docker compose exec web python manage.py <команда>
+
+# Примеры:
+docker compose exec web python manage.py makemigrations
+docker compose exec web python manage.py shell
+```
+
+### Доступ к базе данных
+```
+docker compose exec db psql -U pizza29_user -d pizza29_db
+```
+
+## Полная очистка и пересборка
+
+Если нужно полностью очистить проект:
+
+```
+# Остановить и удалить всё (включая volumes с данными!)
+docker compose down -v --rmi all
+
+# Пересоздать с нуля
+docker compose up -d --build
+docker compose exec web python manage.py migrate
+docker compose exec web python manage.py collectstatic --noinput
+docker compose exec web python manage.py createsuperuser
+```
+
+## Структура проекта
+
+```
+pizza29/
+├── docker-compose.yml      # Конфигурация Docker Compose
+├── nginx.conf              # Конфигурация Nginx
+├── .env                    # Переменные окружения (не коммитить!)
+├── pizza29/                # Директория Django проекта
+│   ├── Dockerfile          # Dockerfile для Django
+│   ├── manage.py
+│   ├── requirements.txt
+│   ├── pizza29/            # Настройки проекта
+│   ├── cart/               # Приложение корзины
+│   ├── main/               # Главное приложение
+│   ├── orders/             # Приложение заказов
+│   ├── payment/            # Приложение оплаты
+│   ├── static/             # Статические файлы
+│   ├── media/              # Медиа файлы
+│   └── users/              # Приложение пользователей
+└── README.md
+```
+
+## Решение проблем
+
+### Проблема: CSS не загружается
+```
+# Очистите кэш браузера: Ctrl + Shift + R
+# Проверьте статические файлы в контейнере nginx:
+docker compose exec nginx ls -la /app/static/
+```
+
+### Проблема: Ошибка подключения к базе данных
+```
+# Проверьте статус контейнера БД:
+docker compose ps
+
+# Проверьте логи БД:
+docker compose logs db
+```
+
+### Проблема: Контейнер web не запускается
+```
+# Проверьте логи:
+docker compose logs web
+
+# Убедитесь, что .env файл создан и заполнен
+```
 
