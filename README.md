@@ -1,24 +1,3 @@
-Вот подробный README.md для вашего проекта:
-
-```markdown
-# Pizza29 - Django E-commerce Project
-
-Веб-приложение для интернет-магазина на Django с использованием Docker, PostgreSQL и Nginx.
-
-## Технологии
-
-- Python 3.10
-- Django
-- PostgreSQL
-- Gunicorn
-- Nginx
-- Docker & Docker Compose
-
-## Требования
-
-- Ubuntu 20.04+ (или другой Linux дистрибутив)
-- Docker 20.10+
-- Docker Compose 2.0+
 
 ## Установка Docker и Docker Compose на Ubuntu
 
