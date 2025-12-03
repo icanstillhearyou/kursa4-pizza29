@@ -108,7 +108,7 @@ networks:
     driver: bridge
 ```
 ```
-#Dockerfile
+#nginx.conf
 events {}
 
 http {
