@@ -50,12 +50,12 @@ git clone https://github.com/icanstillhearyou/kursa4-pizza29.git
 docker compose up -d --build
 ```
 
-### 2. Примените миграции базы данных
+### 2. Примените миграции базы данных (опционально)
 ```
 docker compose exec web python manage.py migrate
 ```
 
-### 3. Соберите статические файлы
+### 3. Соберите статические файлы (опционально)
 ```
 docker compose exec web python manage.py collectstatic --noinput
 ```
@@ -67,8 +67,8 @@ docker compose exec web python manage.py createsuperuser
 
 ### 5. Проверьте работу
 Откройте браузер и перейдите по адресу:
-- Основной сайт: http://localhost
-- Админ-панель: http://localhost/admin
+- Основной сайт: http://ip-адрес-компьютера
+- Админ-панель: http://ip-адрес-компьютера/admin
 
 ## Полезные команды
 
