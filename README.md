@@ -18,6 +18,126 @@ docker-compose version
 ```
 git clone https://github.com/icanstillhearyou/kursa4-pizza29.git
 ```
+### Создайте файлы: Docker, docker-compose.yml, nginx.conf
+```
+#Dockerfile
+FROM python:3.10-slim
+
+WORKDIR /app
+
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1
+
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    gcc \
+    gettext \  
+    vim \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 8000
+
+CMD ["sh", "-c", "python manage.py migrate && gunicorn pizza29.wsgi:application --bind 0.0.0.0:8000"]
+```
+```
+#docker-compose.yml
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  web:
+    build: ./pizza29
+    image: pizza29
+    container_name: pizza29
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./pizza29:/app
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "python manage.py migrate && gunicorn pizza29.wsgi:application --bind 0.0.0.0:8000"
+    networks:
+      - app-network
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx-server
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./pizza29/static:/app/static
+      - ./pizza29/media:/app/media
+    depends_on:
+      - web
+    networks:
+      - app-network
+
+
+volumes:
+  postgres_data:
+  static:
+  media:
+
+networks:
+  app-network:
+    driver: bridge
+```
+```
+#Dockerfile
+events {}
+
+http {
+
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    
+    server {
+        listen 80;
+        #server_name localhost;
+
+        location / {
+            proxy_pass http://web:8000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /static/ {
+            alias /app/static/;
+        }
+
+        location /media/ {
+            alias /app/media/;
+        }
+    }
+}
+```
 ## Запуск проекта
 
 ### 1. Соберите и запустите контейнеры
