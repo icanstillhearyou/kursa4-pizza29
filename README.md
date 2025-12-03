@@ -18,7 +18,7 @@ docker-compose version
 ```
 git clone https://github.com/icanstillhearyou/kursa4-pizza29.git
 ```
-### Создайте файлы: Docker, docker-compose.yml, nginx.conf
+### Проверьте или создайте файлы: Docker, docker-compose.yml, nginx.conf
 ```
 #Dockerfile
 FROM python:3.10-slim
