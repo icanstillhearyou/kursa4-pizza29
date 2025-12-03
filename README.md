@@ -1,40 +1,15 @@
 
-## Установка Docker и Docker Compose на Ubuntu
+## Установка Docker и Docker Compose на Windows
 
-### 1. Обновите систему
+### 1. Установите Docker Desktop для Windows
 ```
-sudo apt update
-sudo apt upgrade -y
-```
-
-### 2. Установите зависимости
-```
-sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+https://docs.docker.com/desktop/setup/install/windows-install/
 ```
 
-### 3. Добавьте официальный репозиторий Docker
-```
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-
-### 4. Установите Docker
-```
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-```
-
-### 5. Добавьте текущего пользователя в группу docker
-```
-sudo usermod -aG docker $USER
-newgrp docker
-```
-
-### 6. Проверьте установку
+### 2. Проверьте установку
 ```
 docker --version
-docker compose version
+docker-compose version
 ```
 
 ## Установка проекта
@@ -42,7 +17,6 @@ docker compose version
 ### Клонируйте репозиторий
 ```
 git clone https://github.com/icanstillhearyou/kursa4-pizza29.git
-cd kursa4-pizza29/pizza29
 ```
 ## Запуск проекта
 
@@ -51,12 +25,12 @@ cd kursa4-pizza29/pizza29
 docker compose up -d --build
 ```
 
-### 2. Примените миграции базы данных
+### 2. Примените миграции базы данных (опционально)
 ```
 docker compose exec web python manage.py migrate
 ```
 
-### 3. Соберите статические файлы
+### 3. Соберите статические файлы (опционально)
 ```
 docker compose exec web python manage.py collectstatic --noinput
 ```
