@@ -18,7 +18,7 @@ docker compose version
 ```
 git clone https://github.com/icanstillhearyou/kursa4-pizza29.git
 ```
-### Проверьте или создайте файлы: Docker, docker-compose.yml, nginx.conf
+### Проверьте или создайте файлы: Docker, docker-compose.yml, nginx.conf, .env
 ```
 #Dockerfile
 FROM python:3.10-slim
@@ -137,6 +137,17 @@ http {
         }
     }
 }
+```
+```
+#.env
+POSTGRES_DB=example
+POSTGRES_USER=example
+POSTGRES_PASSWORD=example
+POSTGRES_HOST=db                  # Имя сервиса из docker-compose.yml
+POSTGRES_PORT=5432
+DJANGO_SECRET_KEY="example-key"
+DJANGO_DEBUG=False                 
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
 ```
 ## Запуск проекта
 
