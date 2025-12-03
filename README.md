@@ -42,7 +42,6 @@ docker compose version
 ### Клонируйте репозиторий
 ```
 git clone https://github.com/icanstillhearyou/kursa4-pizza29.git
-cd kursa4-pizza29/pizza29
 ```
 ## Запуск проекта
 
