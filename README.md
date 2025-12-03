@@ -9,7 +9,7 @@ https://docs.docker.com/desktop/setup/install/windows-install/
 ### 2. Проверьте установку
 ```
 docker --version
-docker-compose version
+docker compose version
 ```
 
 ## Установка проекта
