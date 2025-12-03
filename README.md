@@ -43,9 +43,16 @@ docker compose version
 ```
 git clone https://github.com/icanstillhearyou/kursa4-pizza29.git
 ```
-### Изменить ALLOWED_HOSTS в settings.py
+### Измените ALLOWED_HOSTS в settings.py
 ```
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'ip-компьютера']
+```
+### Добавьте прокси в Dockerfile
+```
+ENV PYTHONUNBUFFERED=1 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    http_proxy="http://sev-proxy.narfu.ru:3128" \
+    https_proxy="http://sev-proxy.narfu.ru:3128"
 ```
 ## Запуск проекта
 
