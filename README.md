@@ -43,6 +43,10 @@ docker compose version
 ```
 git clone https://github.com/icanstillhearyou/kursa4-pizza29.git
 ```
+### Изменить ALLOWED_HOSTS в settings.py
+```
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'ip-компьютера']
+```
 ## Запуск проекта
 
 ### 1. Соберите и запустите контейнеры
